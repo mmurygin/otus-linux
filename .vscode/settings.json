@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "**/.vagrant": true,
+        "**/*.vdi": true
+    }
+}
