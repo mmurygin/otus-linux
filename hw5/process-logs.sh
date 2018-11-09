@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Hello from log processer"
+echo "SOLO RUNNER"
