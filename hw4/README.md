@@ -44,63 +44,9 @@
     1. `lsblk`
 
 ### Добавить модуль в initrd
-1. Создаём папку с модулем
+1. Скрипт создания модуля: `dracut/add-module.sh`
+1. Для проверки можно запустить vm и увидеть пингвинчика при запуске.
+1. Либо можно зайти в запущенный бокс и запустить
     ```bash
-    mkdir /usr/lib/dracut/module.d/01pinguin
+    lsinitrd -m /boot/initramfs-$(uname -r).img | grep pinguin
     ```
-
-1. Создаём setup script
-    ```bash
-    cd /usr/lib/dracut/module.d/01pinguin
-    touch module-setup.sh
-    chmod +x module-setup.sh
-    ```
-
-1. Добавляем в `module-setup.sh` следующий контент
-    ```bash
-    #!/bin/bash
-
-    check () {
-        return 0
-    }
-
-    depends() {
-        return 0
-    }
-
-    install() {
-        inst_hook cleanup 00 "${moddir}/pinguin.sh"
-    }
-    ```
-
-1. Создаём скрипт для вывода пингвина
-    ```bash
-    touch pinguin.sh
-    chmod +x pinguin.sh
-    ```
-
-1. Добавляем в `pinguin.sh` следующий контент
-
-```bash
-exec 0<>/dev/console 1<>/dev/console 2<>/dev/console
-
-cat <<EOM
-_______________________
-< I'm dracut module  >
- -----------------------
-   \
-    \
-        .--.
-       |o_o |
-       |:_/ |
-      //   \ \
-     (|     | )
-    /'\_   _/`\
-    \___)=(___/
-
-    ```
-EOM
-
-sleep 10
-echo "Continuing..."
-sleep 1
