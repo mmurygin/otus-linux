@@ -6,9 +6,5 @@ Vagrant.configure("2") do |config|
 
   config.vm.box_check_update = false
 
-  config.vm.provision "shell", inline: <<-SHELL
-    yum update -y
-    echo "export LC_ALL=en_US.utf-8" >> /etc/profile.d/locale.sh
-    echo "export LANG=en_US.utf-8" >> /etc/profile.d/locale.sh
-  SHELL
+  config.vm.provision "shell", path: "provision.sh"
 end
