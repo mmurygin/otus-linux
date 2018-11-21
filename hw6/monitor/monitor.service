@@ -1,0 +1,10 @@
+[Unit]
+Description=Key word monitor script
+
+[Service]
+Type=simple
+EnvironmentFiles=/etc/sysconfig/monitor
+ExecStart=/usr/bin/monitor.sh
+
+[Install]
+WantedBy=multi-user.target
