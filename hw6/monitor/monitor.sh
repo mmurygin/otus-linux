@@ -1,12 +1,14 @@
 #!/bin/bash
 
-if [[ ! "$FILE_NAME" ]]; then
-    echo "Please provide filename"
+if [[ ! "$FILE" ]]; then
+    echo "Please provide filename" >&2
     exit 1
 fi
 
 if [[ ! "$KEY_WORD" ]]; then
-    echo "Please provide key word"
+    echo "Please provide key word" >&2
 fi
 
-grep "$KEY_WORD" "$FILE_NAME"
+echo "Searching ${KEY_WORD} in ${FILE}"
+
+grep "$KEY_WORD" "$FILE"
