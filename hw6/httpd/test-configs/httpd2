@@ -1,0 +1,2 @@
+PORT=8081
+PID_FILE=/etc/httpd/run/httpd2.pid
