@@ -6,3 +6,4 @@
 - [HW3: Work with LVM](hw3)
 - [HW4: Edit boot params](hw4)
 - [HW5: Aggregating nginx logs with shell and sending with cron](hw5)
+- [HW6: Systemd](hw6)

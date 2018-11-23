@@ -2,11 +2,6 @@
 Description=Key word monitor script
 
 [Service]
-Type=simple
+Type=oneshot
 EnvironmentFile=/etc/sysconfig/monitor
 ExecStart=/usr/bin/monitor.sh
-Restart=on-success
-RestartSec=30
-
-[Install]
-WantedBy=multi-user.target

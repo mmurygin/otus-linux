@@ -1,0 +1,9 @@
+[Unit]
+Description=Runs monitor service every 30 seconds
+
+[Timer]
+OnCalendar=*-*-* *:*:00/30
+Unit=monitor.service
+
+[Install]
+WantedBy=multi-user.target
