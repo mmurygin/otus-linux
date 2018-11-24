@@ -6,24 +6,43 @@
 1. Дополнить юнит-файл apache httpd возможностьб запустить несколько инстансов сервера с разными конфигами
 
 ## Check result
+
 ### Before
 
-1. `vagrant up`
-1. `vagrant ssh`
+```bash
+vagrant up
+vagrant ssh
+```
 
-
-### Написать сервис, который будет раз в 30 секунд мониторить лог на предмет наличия ключевого слова. Файл и слово должны задаваться в /etc/sysconfig
+### Monitor log file
 
 1. [Solution](monitor)
+
 1. Check results
     ```bash
+    systemctl status monitor.service
+    systemctl status monitor.timer
+
     journalctl -u monitor.service
     ```
 
-### Дополнить юнит-файл apache httpd возможность запустить несколько инстансов сервера с разными конфигами
+### Unit for spawn-fcgi
+1. [Solution](fcgi)
+1. Check results
+    ```bash
+    systemctl status spawn-fcgi.service
+    curl localhost
+    ```
+
+### Templates for httpd
 1. [Solution](httpd)
 1. Check results
     ```bash
     systemctl status httpd@httpd1.service
     systemctl status httpd@httpd2.service
+    ```
+
+    ```bash
+    curl localhost:8000
+    curl localhost:8001
     ```

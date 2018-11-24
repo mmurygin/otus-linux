@@ -1,0 +1,13 @@
+[Unit]
+Description=The service for running fcgi programm
+After=network.target
+Documentation=man:spawn-fcgi(1)
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/spawn-fcgi $OPTIONS
+ExecReload=/usr/bin/spawn-fcgi $OPTIONS
+EnvironmentFile=/etc/sysconfig/spawn-fcgi
+
+[Install]
+WantedBy=multi-user.target

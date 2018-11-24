@@ -3,9 +3,13 @@
 yum install -y epel-release
 yum install -y gcc fcgi-devel spawn-fcgi nginx
 
-# build and run fcgi server
+# build fcgi server
 gcc -o /usr/bin/test-server /vagrant/fcgi/test-server.c -lfcgi
-spawn-fcgi -p 9000 -f /usr/bin/test-server
+
+# configure spawn-fcgi unit
+cp /vagrant/fcgi/spawn-fcgi.service /etc/systemd/system/spawn-fcgi.service
+cp /vagrant/fcgi/spawn-fcgi.conf /etc/sysconfig/spawn-fcgi
+systemctl enable --now spawn-fcgi.service
 
 # configure and run nginx
 cp /vagrant/fcgi/nginx.conf /etc/nginx/nginx.conf
