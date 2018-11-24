@@ -8,10 +8,10 @@ int main(void)
         printf("HTTP/1.1 200 OK\r\n"
                "Content-type: text/html\r\n"
                "\r\n"
-               "<title>FastCGI Hello!</title>"
-               "<h1>FastCGI Hello!</h1>"
-               "Request number %d running on host <i>%s</i>\n",
-               ++count, getenv("SERVER_NAME"));
+               "<title>FastCGI Hello!</title>\n"
+               "<h1>FastCGI Hello!</h1>\n"
+               "Request number %d\n",
+               ++count);
 
     return 0;
 }

@@ -2,10 +2,6 @@
 
 yum install -y httpd
 
-# apache could not listen to some ports when enforcing is true
-# set permissive mode
-setenforce 0
-
 # remove default port. We will provide port in config file
 sed -i '/Listen 80/d' /etc/httpd/conf/httpd.conf
 
