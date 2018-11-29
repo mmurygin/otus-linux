@@ -7,3 +7,4 @@
 - [HW4: Edit boot params](hw4)
 - [HW5: Aggregating nginx logs with shell and sending with cron](hw5)
 - [HW6: Systemd](hw6)
+- [HW7: PAM](hw7)
