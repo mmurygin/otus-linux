@@ -9,3 +9,11 @@
 Реализовать это все либо в Vagrant, либо развернуть у себя через NGINX и дать ссылку на репозиторий.
 
 * Написать свой Dockerfile, собрать Image и разместить его в Docker Registry. Как результат прислать ссылку на Image и краткую инструкцию.
+
+## Solution
+```bash
+vagrant up
+vagrant ssh
+yum repolist
+yum provides nginx
+```
