@@ -15,6 +15,13 @@ vagrant up
 vagrant ssh
 ```
 
+### Signaling
+```bash
+/vagrant/signal.py &
+kill -10 pid
+kill -15 pid
+```
+
 ### Nice
 ```bash
 cd /vagrant
