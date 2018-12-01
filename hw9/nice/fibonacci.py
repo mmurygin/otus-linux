@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import sys
+import os
+from timeit import default_timer as timer
 
 def fibonacci(n):
     if n == 0:
@@ -15,8 +17,11 @@ if len(sys.argv) != 2:
     exit(1)
 
 n = int(sys.argv[1])
-print("Calculating fibonacci for n = %s" % n)
+nice = os.nice(0)
+print("Calculating fibonacci for n = %d with nice = %d" % (n, nice))
 
+start = timer()
 res = fibonacci(n)
+end = timer()
 
-print("Result = %s" % res)
+print("Execution time with nice %d: %f s" % (nice, (end - start)))
