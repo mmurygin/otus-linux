@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./ionice/generate-file-with-ionice.sh 2 7 &
-./ionice/generate-file-with-ionice.sh 2 0 &
+ionice -c 2 -n 7 ./ionice/generate-file.sh &
+ionice -c 2 -n 0 ./ionice/generate-file.sh &
 
 wait
