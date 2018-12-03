@@ -13,6 +13,7 @@
 ```bash
 vagrant up
 vagrant ssh
+cd /vagrant
 ```
 
 ### PS
@@ -22,19 +23,18 @@ vagrant ssh
 
 ### Signaling
 ```bash
-/vagrant/signal.py &
+./signal.py &
 kill -10 pid
 kill -15 pid
+fg
 ```
 
 ### Nice
 ```bash
-cd /vagrant
-./nice/run.sh
+sudo ./nice/run.sh
 ```
 
-## IONice
+## IO Nice
 ```bash
-cd /vagrant
-./ionice/run.sh
+sudo ./ionice/run.sh
 ```
