@@ -15,6 +15,11 @@ vagrant up
 vagrant ssh
 ```
 
+### PS
+```bash
+./ps.py
+```
+
 ### Signaling
 ```bash
 /vagrant/signal.py &

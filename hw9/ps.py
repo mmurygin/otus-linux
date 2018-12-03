@@ -4,7 +4,7 @@ import glob
 import os
 
 users = dict()
-format_str = "{:<8.8} {:>5} {:>4} {:>4} {:>10} {:>8} {:<8} {:<5} {:<5} {:<5} {:<.40}"
+format_str = "{:<8.8} {:>5} {:>7} {:>7} {:<4} {:}"
 
 
 def get_processes():
@@ -34,7 +34,12 @@ def get_user_name(user_id):
 
 
 def get_value_from_status_rows(key, status_rows):
-    value_str = [x for x in status_rows if x.startswith('%s:' % key)][0]
+    value_strs = [x for x in status_rows if x.startswith('%s:' % key)]
+
+    if len(value_strs) == 0:
+        return ''
+
+    value_str = value_strs[0]
 
     sep_index = value_str.index(':')
 
@@ -60,19 +65,15 @@ def print_process(pid):
     uid = get_value_from_status_rows('Uid', status).split()[0]
     ulogin = get_user_name(uid)
 
-    time = int(stat[13]) + int(stat[14])
+    vmsize = get_value_from_status_rows('VmSize', status).rstrip(' kB')
+    vmrss = get_value_from_status_rows('VmRSS', status).rstrip(' kB')
 
     print(format_str.format(
         ulogin,
         pid,
-        'data',
-        'data',
-        stat[22],
-        stat[23],
-        stat[6],
+        vmsize,
+        vmrss,
         stat[2],
-        'data',
-        time,
         cmd,
     ))
 
@@ -81,14 +82,9 @@ def print_processes(procceses):
     print(format_str.format(
         'USER',
         'PID',
-        '%CPU',
-        "%MEM",
         'VSZ',
         'RSS',
-        'TTY',
         'STAT',
-        'START',
-        'TIME',
         'COMMAND'
     ))
 
