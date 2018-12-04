@@ -28,14 +28,11 @@ http {
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
 
-    # Load modular configuration files from the /etc/nginx/conf.d directory.
-    # See http://nginx.org/en/docs/ngx_core_module.html#include
-    # for more information.
     include /etc/nginx/conf.d/*.conf;
 
     server {
-        listen       80 default_server;
-        listen       [::]:80 default_server;
+        listen       {{ http_port }} default_server;
+        listen       [::]:{{ http_port }} default_server;
         server_name  _;
         root         /usr/share/nginx/html;
 
