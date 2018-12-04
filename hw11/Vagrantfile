@@ -2,8 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.define "nginx"
-  config.vm.hostname = "nginx"
+  config.vm.hostname = "hw11"
 
   config.vm.box = "centos/7"
   config.vm.box_check_update = false
