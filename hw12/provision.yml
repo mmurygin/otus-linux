@@ -1,0 +1,7 @@
+---
+- name: Configure webserver with nginx
+  hosts: all
+  become: True
+  roles:
+    - tunned-nginx
+...
