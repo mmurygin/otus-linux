@@ -11,3 +11,4 @@
 - [HW8: RPM and YUM](hw08)
 - [HW9: Processes](hw09)
 - [HW11: Ansible](hw11)
+- [HW12: Tuning linux kernel and nginx](hw12)
