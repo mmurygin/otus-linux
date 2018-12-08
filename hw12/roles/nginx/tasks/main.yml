@@ -1,0 +1,19 @@
+---
+- name: install nginx
+  yum:
+    name: nginx
+    state: present
+  notify: restart nginx
+- name: copy nginx configuration files
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: 'files/etc/nginx/nginx.conf', dest: '/etc/nginx/nginx.conf' }
+    - { src: 'files/etc/nginx/conf.d/performance.conf', dest: '/etc/nginx/conf.d/performance.conf' }
+    - { src: 'files/etc/nginx/conf.d/gzip.conf', dest: '/etc/nginx/conf.d/gzip.conf' }
+  notify: restart nginx
+

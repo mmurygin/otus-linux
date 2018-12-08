@@ -9,10 +9,10 @@
 
 ## Solution
 1. Kernel performance tuning files:
-    * [sysctl.conf](roles/tunned-nginx/files/etc/sysctl.conf)
-    * [limits.conf](roles/tunned-nginx/files/etc/security/limits.conf)
+    * [sysctl.conf](roles/tune_kernel_for_web/files/etc/sysctl.conf)
+    * [limits.conf](roles/tune_kernel_for_web/files/etc/security/limits.conf)
 
-1. [Nginx tuning files](roles/tunned-nginx/files/etc/nginx/conf.d)
+1. [Nginx tuning files](roles/nginx/files/etc/nginx/conf.d)
 
 1. Run result
     ```bash

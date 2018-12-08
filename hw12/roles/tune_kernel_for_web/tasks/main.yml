@@ -1,0 +1,11 @@
+---
+- name: copy perfomance tuning configuration files
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: 'files/etc/sysctl.conf', dest: '/etc/sysctl.conf' }
+    - { src: 'files/etc/security/limits.conf', dest: '/etc/security/limits.conf' }

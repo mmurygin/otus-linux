@@ -3,5 +3,8 @@
   hosts: all
   become: True
   roles:
-    - tunned-nginx
+    - epel
+    - monitoring
+    - tune_kernel_for_web
+    - nginx
 ...

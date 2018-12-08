@@ -1,0 +1,9 @@
+---
+- name: install packages for monitoring and troubleshooting
+  yum:
+    name:
+      - iotop
+      - sysstat
+      - strace
+      - atop
+    state: present
