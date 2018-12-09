@@ -9,3 +9,4 @@
   loop:
     - { src: 'files/etc/sysctl.conf', dest: '/etc/sysctl.conf' }
     - { src: 'files/etc/security/limits.conf', dest: '/etc/security/limits.conf' }
+  notify: reload kernel params

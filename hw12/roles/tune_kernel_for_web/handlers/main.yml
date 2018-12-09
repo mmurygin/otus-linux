@@ -1,0 +1,6 @@
+---
+- name: reload kernel params
+  service:
+    name: systemd-sysctl
+    state: restarted
+...
