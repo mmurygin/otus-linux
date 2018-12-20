@@ -1,6 +1,7 @@
 {
     "files.exclude": {
         "**/.vagrant": true,
-        "**/*.vdi": true
+        "**/*.vdi": true,
+        "**/*.retry": true
     }
 }
