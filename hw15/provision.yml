@@ -1,0 +1,20 @@
+---
+- name: Setup web server with nginx
+  hosts: web
+  become: True
+  gather_facts: False
+  roles:
+    - epel
+    - nginx
+    - role: add-entry-to-hosts
+      ip: 192.168.1.11
+      dns: log
+- name: Setup log server
+  hosts: log
+  become: True
+  gather_facts: False
+  roles:
+    - role: add-entry-to-hosts
+      ip: 192.168.1.10
+      dns: web
+...

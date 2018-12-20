@@ -8,7 +8,6 @@ Vagrant.configure("2") do |config|
 
     web.vm.hostname = "web"
     web.vm.network "private_network", ip: "192.168.1.10"
-    web.vm.provision :shell, inline: "echo 192.168.1.11 log >> /etc/hosts"
   end
 
   config.vm.define "log" do |log|
@@ -17,6 +16,9 @@ Vagrant.configure("2") do |config|
 
     log.vm.hostname = "log"
     log.vm.network "private_network", ip: "192.168.1.11"
-    log.vm.provision :shell, inline: "echo 192.168.1.10 web >> /etc/hosts"
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provision.yml"
   end
 end
