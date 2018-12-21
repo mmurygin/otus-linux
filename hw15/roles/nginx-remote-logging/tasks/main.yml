@@ -5,7 +5,7 @@
       marker: "# {mark} ANSIBLE MANAGED BLOCK: remote logging"
       content: |
         # ### begin forwarding rule ###
-        *.crit @{{ server_name }}:514
+        *.crit @{{ remote_server }}:514
         # ### end of the forwarding rule ###
   notify: restart rsyslog
 
@@ -14,7 +14,7 @@
     path: /etc/nginx/nginx.conf
     state: present
     regexp: 'access_log  /var/log/nginx/access.log  main;'
-    line: '    access_log syslog:server={{ server_name }},facility=local7,tag=nginx,severity=info main;'
+    line: '    access_log syslog:server={{ remote_server }},facility=local7,tag=nginx,severity=info main;'
   notify: reload nginx configs
 
 - name: cofigure nginx to store critical error logs locally
@@ -31,6 +31,6 @@
       path: /etc/nginx/nginx.conf
       state: present
       insertafter: 'worker_processes auto;'
-      line: 'error_log syslog:server={{ server_name }},facility=local6,tag=nginx-error,severity=error;'
+      line: 'error_log syslog:server={{ remote_server }},facility=local6,tag=nginx-error;'
   notify: reload nginx configs
 ...

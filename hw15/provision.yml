@@ -10,11 +10,15 @@
       ip: 192.168.1.11
       dns: log
     - role: nginx-remote-logging
-      server_name: log
+      remote_server: log
+    - role: audit-directory
+      dir: /etc/nginx
+      remote_server: log
 - name: Setup log server
   hosts: log
   become: True
   gather_facts: False
   roles:
     - rsyslog-server
+    - audit-server
 ...
