@@ -14,6 +14,8 @@
     - role: audit-directory
       audit_dir: /etc/nginx
       audit_key: nginx_conf
+    - role: audit-client
+      remote_server: log
 - name: Setup log server
   hosts: log
   become: True

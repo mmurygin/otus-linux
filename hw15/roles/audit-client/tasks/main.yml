@@ -1,0 +1,30 @@
+---
+- name: install audisp plugin for remote logging
+  yum:
+    name: audispd-plugins
+    state: present
+
+- name: config remote server ip
+  lineinfile:
+    path: /etc/audisp/audisp-remote.conf
+    regexp: 'remote_server ='
+    line: 'remote_server = {{ remote_server }}'
+    backrefs: yes
+  notify: restart audit
+
+- name: enable auditd remote logging
+  lineinfile:
+    path: /etc/audisp/plugins.d/au-remote.conf
+    regexp: 'active = no'
+    line: 'active = yes'
+    backrefs: yes
+  notify: restart audit
+
+- name: disable local auditd logging
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: 'log_format = RAW'
+    line: 'log_format = NOLOG'
+    backrefs: yes
+  notify: restart audit
+...
