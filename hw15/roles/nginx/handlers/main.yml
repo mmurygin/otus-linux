@@ -4,3 +4,8 @@
     name: nginx
     state: restarted
     enabled: yes
+- name: restart rsyslog
+  service:
+    name: rsyslog
+    state: restarted
+...
