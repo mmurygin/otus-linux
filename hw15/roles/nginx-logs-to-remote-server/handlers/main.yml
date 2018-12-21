@@ -3,8 +3,8 @@
   service:
     name: rsyslog
     state: restarted
-- name: reload nginx configs
+- name: restart nginx
   service:
     name: nginx
-    state: reloaded
+    state: restarted
 ...

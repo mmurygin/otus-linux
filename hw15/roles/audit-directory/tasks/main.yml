@@ -1,2 +1,7 @@
 ---
-# tasks file for audit-directory
+- name: add audit rule to monitor config changes
+  template:
+      dest: /etc/audit/rules.d/{{ audit_key }}.rules
+      src: templates/audit.rules.j2
+  notify: restart audit
+...

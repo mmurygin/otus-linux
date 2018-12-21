@@ -1,2 +1,7 @@
 ---
-# handlers file for audit-directory
+- name: restart audit
+  service:
+    name: auditd
+    state: restarted
+    use: service
+...
