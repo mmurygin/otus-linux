@@ -9,13 +9,12 @@
     - role: add-entry-to-hosts
       ip: 192.168.1.11
       dns: log
+    - role: nginx-remote-logging
+      server_name: log
 - name: Setup log server
   hosts: log
   become: True
   gather_facts: False
   roles:
-    - role: add-entry-to-hosts
-      ip: 192.168.1.10
-      dns: web
     - rsyslog-server
 ...

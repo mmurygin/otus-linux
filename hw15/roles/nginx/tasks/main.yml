@@ -4,14 +4,4 @@
     name: nginx
     state: present
   notify: restart nginx
-- name: configure rsyslog to send critical errors to remote server
-  blockinfile:
-      path: /etc/rsyslog.conf
-      marker: "# {mark} ANSIBLE MANAGED BLOCK: remote logging ###"
-      insertafter: "# ### end of the forwarding rule ###"
-      content: |
-        # ### begin forwarding rule ###
-        *.crit @log:514
-        # ### end of the forwarding rule ###
-  notify: restart rsyslog
 ...
