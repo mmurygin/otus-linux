@@ -1,2 +1,6 @@
 ---
-# handlers file for audit-server
+- name: restart audit
+  service:
+    name: audit
+    state: restarted
+...

@@ -9,4 +9,4 @@
     - { config: '\$ModLoad imudp' }
     - { config: '\$UDPServerRun 514' }
   notify: restart rsyslog
-
+...

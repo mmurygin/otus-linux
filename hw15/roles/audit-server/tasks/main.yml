@@ -1,2 +1,9 @@
 ---
-# tasks file for audit-server
+- name: listen for port 60
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: '^##(tcp_listen_port = 60)$'
+    line: '\1'
+    backrefs: yes
+  notify: restart audit
+...
