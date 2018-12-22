@@ -7,7 +7,7 @@
     - epel
     - nginx
     - role: add-entry-to-hosts
-      ip: 192.168.1.11
+      ip: 192.168.100.11
       dns: log
     - role: nginx-logs-to-remote-server
       remote_server: log
