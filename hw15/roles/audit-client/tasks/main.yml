@@ -23,8 +23,7 @@
 - name: disable local auditd logging
   lineinfile:
     path: /etc/audit/auditd.conf
-    regexp: 'log_format = RAW'
-    line: 'log_format = NOLOG'
-    backrefs: yes
+    line: 'write_logs = no'
+    state: present
   notify: restart audit
 ...
