@@ -40,19 +40,16 @@
     exit
     ```
 
-1. check that all audit logs are sent to the log server
+1. check audit of `nginx` config changes
     ```bash
     vagrant ssh web
-
-    # check that audit is empty
-    ```
-
-1. check auditing of `nginx` config changes
-    ```bash
-    vagrant ssh web
-    vi /etc/nginx/nginx.conf # change something and save
+    # change something and save
+    vi /etc/nginx/nginx.conf
+    # check that there is no record in local audit log
+    ausearch -k nginx_conf
     exit
 
     vagrant ssh log
     # check that we get audit message
+    ausearch -k nginx_conf
     ```
