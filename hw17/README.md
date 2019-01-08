@@ -149,7 +149,7 @@ Office2----/
     ```bash
     vagrant ssh inetRouter
     ssh vagrant@192.168.255.2 # password 111111
-    ssh vagrant@machine-ip # password 111111
+    ssh vagrant@192.168.x.x # password 111111
 
     sudo nmcli device disconnect eth0
     sudo nmcli connection delete "System eth0"
@@ -159,7 +159,7 @@ Office2----/
 1. SSH to any machine through **inetRouter**
     ```bash
     vagrant ssh inetRouter
-    ssh vagrant@machine-ip #password 111111
+    ssh vagrant@192.168.x.x #password 111111
     ```
 
 1.  Check routes table
@@ -173,5 +173,5 @@ Office2----/
     ping 192.168.x.x
 
     tracepath -n google.com
-    tracepath -n 192.168.255.1
+    tracepath -n 192.168.x.x
     ```
