@@ -141,9 +141,8 @@ Office2----/
     vagrant ssh inetRouter
     ssh vagrant@192.168.255.2 # password 111111
 
-    sudo -i
-    nmcli device disconnect eth0
-    nmcli connection delete "System eth0"
+    sudo nmcli device disconnect eth0
+    sudo nmcli connection delete "System eth0"
     ```
 
 1. SSH to central router and disable `eth0` for every vm (_centralServer_, _office1Router_, _office2Router_, _office1Server_, _office2Server_).
@@ -152,9 +151,8 @@ Office2----/
     ssh vagrant@192.168.255.2 # password 111111
     ssh vagrant@machine-ip # password 111111
 
-    sudo -i
-    nmcli device disconnect eth0
-    nmcli connection delete "System eth0"
+    sudo nmcli device disconnect eth0
+    sudo nmcli connection delete "System eth0"
     ```
 
 #### Check Solution

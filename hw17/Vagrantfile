@@ -13,11 +13,39 @@ MACHINES = {
             { ip: '192.168.10.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
             { ip: '192.168.10.33', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "hw-net" },
             { ip: '192.168.10.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
+            { ip: '192.168.254.1', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "rounter-in" },
         ]
     },
     :centralServer => {
         :net => [
             { ip: '192.168.10.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
+        ]
+    },
+    :office1Router => {
+        :net => [
+            { ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
+            { ip: '192.168.12.1', adapter: 3, netmask: "255.255.255.192", virtualbox__intnet: "dev1-net" },
+            { ip: '192.168.12.65', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test1-net" },
+            { ip: '192.168.12.129', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "managers1-net" },
+            { ip: '192.168.12.193', adapter: 6, netmask: "255.255.255.192", virtualbox__intnet: "hw1-net" },
+        ]
+    },
+    :office1Server => {
+        :net => [
+            { ip: '192.168.12.2', adapter: 3, netmask: "255.255.255.192", virtualbox__intnet: "dev1-net" },
+        ]
+    },
+    :office2Router => {
+        :net => [
+            { ip: '192.168.254.3', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
+            { ip: '192.168.11.1', adapter: 3, netmask: "255.255.255.128", virtualbox__intnet: "dev2-net" },
+            { ip: '192.168.11.129', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test2-net" },
+            { ip: '192.168.11.193', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "hw2-net" },
+        ]
+    },
+    :office2Server => {
+        :net => [
+            { ip: '192.168.11.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dev2-net" },
         ]
     },
 }
