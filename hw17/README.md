@@ -180,3 +180,8 @@ ss -ltn
     tracepath -n google.com
     tracepath -n 192.168.x.x
     ```
+
+#### Stop all ssh tunnels
+```bash
+pkill -x ssh
+```

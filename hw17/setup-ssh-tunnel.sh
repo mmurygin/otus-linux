@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo IMPORTANT: Please make sure that ports 2222, 8001-8005 are opened
+echo IMPORTANT: Please make sure that ports 8001-8006 are opened
 
 if [[ ! -e ~/.ssh/config || -z $(grep "StrictHostKeyChecking no" ~/.ssh/config) ]]; then
     echo Disabling host check scanning for 127.0.0.1
@@ -9,10 +9,8 @@ Host 127.0.0.1
     StrictHostKeyChecking no
 EOF
 
-    chmod 400 ~/.ssh/config
+    chmod 440 ~/.ssh/config
 fi
-exit 0
-
 
 private_key="${HOME}/.vagrant.d/insecure_private_key"
 
@@ -21,7 +19,7 @@ ssh -i "$private_key" -L 8001:192.168.255.2:22 -p 2222 -N vagrant@127.0.0.1 &
 sleep 1
 
 echo Forwarding centralServer to localhost:8002
-ssh -i "$private_key" -L 8002:192.168.0.2:22 -p 2222 -N vagrant@127.0.0.1 &
+ssh -i "$private_key" -L 8002:192.168.0.2:22 -p 8001 -N vagrant@127.0.0.1 &
 sleep 1
 
 echo Forwarding office1Router to localhost:8003
