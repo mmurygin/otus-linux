@@ -56,47 +56,47 @@ Vagrant.configure("2") do |config|
             box.vm.box = "centos/7"
             box.vm.host_name = boxname.to_s
 
-            box.ssh.private_key_path = "custom_key_file"
+            box.ssh.insert_key = false
             box.ssh.forward_agent = true
 
             boxconfig[:net].each do |ipconf|
                 box.vm.network "private_network", ipconf
             end
 
-            case boxname.to_s
-                when "inetRouter"
-                    box.vm.provision "shell", path: "provision/inet-router.sh"
-                when "centralRouter"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/router.sh"
-                        s.args   = ["System eth1", "192.168.255.1"]
-                    end
-                when "centralServer"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/server.sh"
-                        s.args   = ["System eth1", "192.168.0.1"]
-                    end
-                when "office1Router"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/router.sh"
-                        s.args   = ["System eth1", "192.168.254.1"]
-                    end
-                when "office1Server"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/server.sh"
-                        s.args   = ["System eth1", "192.168.2.1"]
-                    end
-                when "office2Router"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/router.sh"
-                        s.args   = ["System eth1", "192.168.254.1"]
-                    end
-                when "office1Server"
-                    box.vm.provision "shell" do |s|
-                        s.path = "provision/server.sh"
-                        s.args   = ["System eth1", "192.168.1.1"]
-                    end
-            end
+            # case boxname.to_s
+            # when "inetRouter"
+            #     box.vm.provision "shell", path: "provision/inet-router.sh"
+            # when "centralRouter"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/router.sh"
+            #         s.args   = ["System eth1", "192.168.255.1"]
+            #     end
+            # when "centralServer"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/server.sh"
+            #         s.args   = ["System eth1", "192.168.0.1"]
+            #     end
+            # when "office1Router"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/router.sh"
+            #         s.args   = ["System eth1", "192.168.254.1"]
+            #     end
+            # when "office1Server"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/server.sh"
+            #         s.args   = ["System eth1", "192.168.2.1"]
+            #     end
+            # when "office2Router"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/router.sh"
+            #         s.args   = ["System eth1", "192.168.254.1"]
+            #     end
+            # when "office1Server"
+            #     box.vm.provision "shell" do |s|
+            #         s.path = "provision/server.sh"
+            #         s.args   = ["System eth1", "192.168.1.1"]
+            #     end
+            # end
         end
     end
 end

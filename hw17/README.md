@@ -130,12 +130,17 @@ Office2----/
 
 
 ### Practise
+#### Before
+**Please make sure that ports 2222, 8001-8005 are opened on your localhost**
+```bash
+ss -ltn
+```
+
 #### Getting Started
 1. Run environment
     ```bash
     vagrant up
     ```
-
 1. Disable `eth0` interface for `centralRouter`
     ```bash
     vagrant ssh inetRouter
