@@ -5,7 +5,9 @@ MACHINES = {
     :inetRouter => {
         :net => [
             { ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
-        ]
+        ],
+        masquerade: true,
+        isRouter: true,
     },
     :centralRouter => {
         :net => [
@@ -14,12 +16,17 @@ MACHINES = {
             { ip: '192.168.0.33', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "hw-net" },
             { ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
             { ip: '192.168.254.1', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
-        ]
+        ],
+        gateway: "192.168.255.1",
+        dns: "8.8.8.8",
+        isRouter: true,
     },
     :centralServer => {
         :net => [
             { ip: '192.168.0.2', adapter: 2, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
-        ]
+        ],
+        gateway: "192.168.0.1",
+        dns: "8.8.8.8",
     },
     :office1Router => {
         :net => [
@@ -28,12 +35,16 @@ MACHINES = {
             { ip: '192.168.2.65', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test1-net" },
             { ip: '192.168.2.129', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "managers1-net" },
             { ip: '192.168.2.193', adapter: 6, netmask: "255.255.255.192", virtualbox__intnet: "hw1-net" },
-        ]
+        ],
+        gateway: "192.168.254.1",
+        dns: "8.8.8.8",
+        isRouter: true,
     },
     :office1Server => {
         :net => [
             { ip: '192.168.2.2', adapter: 3, netmask: "255.255.255.192", virtualbox__intnet: "dev1-net" },
-        ]
+        ],
+        gateway: "192.168.2.1",
     },
     :office2Router => {
         :net => [
@@ -41,12 +52,17 @@ MACHINES = {
             { ip: '192.168.1.1', adapter: 3, netmask: "255.255.255.128", virtualbox__intnet: "dev2-net" },
             { ip: '192.168.1.129', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test2-net" },
             { ip: '192.168.1.193', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "hw2-net" },
-        ]
+        ],
+        gateway: "192.168.254.1",
+        dns: "8.8.8.8",
+        isRouter: true,
     },
     :office2Server => {
         :net => [
             { ip: '192.168.1.2', adapter: 2, netmask: "255.255.255.192", virtualbox__intnet: "dev2-net" },
-        ]
+        ],
+        gateway: "192.168.1.1",
+        dns: "8.8.8.8",
     },
 }
 
@@ -63,40 +79,24 @@ Vagrant.configure("2") do |config|
                 box.vm.network "private_network", ipconf
             end
 
-            # case boxname.to_s
-            # when "inetRouter"
-            #     box.vm.provision "shell", path: "provision/inet-router.sh"
-            # when "centralRouter"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/router.sh"
-            #         s.args   = ["System eth1", "192.168.255.1"]
-            #     end
-            # when "centralServer"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/server.sh"
-            #         s.args   = ["System eth1", "192.168.0.1"]
-            #     end
-            # when "office1Router"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/router.sh"
-            #         s.args   = ["System eth1", "192.168.254.1"]
-            #     end
-            # when "office1Server"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/server.sh"
-            #         s.args   = ["System eth1", "192.168.2.1"]
-            #     end
-            # when "office2Router"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/router.sh"
-            #         s.args   = ["System eth1", "192.168.254.1"]
-            #     end
-            # when "office1Server"
-            #     box.vm.provision "shell" do |s|
-            #         s.path = "provision/server.sh"
-            #         s.args   = ["System eth1", "192.168.1.1"]
-            #     end
-            # end
+            if boxconfig.key?("masquerade") and boxconfig[:masquerade] then
+                iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+            end
+
+            if boxconfig.key?("isRouter") and boxconfig[:isRouter] then
+                echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+                sysctl -p /etc/sysctl.conf
+            end
+
+            if boxconfig.key?("dns") then
+                nmcli connection modify "System eth1" ipv4.dns boxconfig[:dns]
+                nmcli connection up "System eth1"
+            end
+
+            if boxconfig.key?("gateway") then
+                nmcli connection modify "System eth1" ipv4.gateway boxconfig[:gateway]
+                nmcli connection up "System eth1"
+            end
         end
     end
 end
