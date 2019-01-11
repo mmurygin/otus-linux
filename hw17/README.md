@@ -167,8 +167,9 @@ Office2----/
 
 1. Connect to any vm, check routes and connectivity
     ```bash
-    ssh -i ~/.vagrant.d/insecure_private_key -p port -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null vagrant@127.0.0.1
+    ssh -i ~/.vagrant.d/insecure_private_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null vagrant@127.0.0.1 -p port
     ip route
+    tracepath -n some-ip
     ping some-internal-ip
     ping some-external-ip
     ```

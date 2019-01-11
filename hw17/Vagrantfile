@@ -20,6 +20,10 @@ MACHINES = {
             { ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
             { ip: '192.168.254.1', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
         ],
+        routes: [
+            { dst: "192.168.1.0/24", src: "192.168.254.3", connection: "System eth5" },
+            { dst: "192.168.2.0/24", src: "192.168.254.2", connection: "System eth5" },
+        ],
         gateway: "192.168.255.1",
         dns: "8.8.8.8",
         isRouter: true,
@@ -82,11 +86,13 @@ Vagrant.configure("2") do |config|
                 box.vm.network "private_network", ipconf
             end
 
+            # box.vm.provision "shell", inline: "yum install -y tcpdump"
+
             if boxconfig[:routes] then
                 boxconfig[:routes].each do |route|
                     box.vm.provision "shell" do |s|
                         s.inline = <<-SHELL
-                            nmcli connection modify "$1" ipv4.routes "$2 $3"
+                            nmcli connection modify "$1" +ipv4.routes "$2 $3"
                             nmcli connection up "$1"
                         SHELL
                         s.args = [route[:connection], route[:dst], route[:src]]
