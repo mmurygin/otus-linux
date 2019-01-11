@@ -12,4 +12,5 @@
 - [HW9: Processes](hw09)
 - [HW11: Ansible](hw11)
 - [HW12: Tuning linux kernel and nginx](hw12)
-- [HW15: Centralized logging](hw15)
+- [HW14: Centralized logging](hw14)
+- [HW16: Networking](hw16)
