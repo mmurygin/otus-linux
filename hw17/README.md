@@ -123,65 +123,66 @@ Office2----/
         * broadcast: **192.168.0.3**
 
 #### Свободные подсети
-1. Сеть central
+1. Сеть **192.168.0.0/24**
     1. **192.168.0.16/28**
     1. **192.168.0.48/28**
     1. **192.168.0.128/25**
+1. Сеть **192.168.255.0/24**
+    1. **192.168.255.4/30**
+    1. **192.168.255.8/29**
+    1. **192.168.255.16/28**
+    1. **192.168.255.32/27**
+    1. **192.168.255.64/26**
+    1. **192.168.255.128/25**
+1. Сеть **192.168.254.0/24**
+    1. **192.168.254.8/29**
+    1. **192.168.254.16/28**
+    1. **192.168.254.32/27**
+    1. **192.168.254.64/26**
+    1. **192.168.254.128/25**
 
 
 ### Practise
 #### Before
-**Please make sure that ports 2222, 8001-8005 are opened on your localhost**
-```bash
-ss -ltn
-```
+1. Please make sure that ports 2222, 8001-8005 are opened on your localhost
+    ```bash
+    ss -ltn
+    ```
 
-#### Getting Started
+#### Check Solution
 1. Run environment
     ```bash
     vagrant up
     ```
-1. Disable `eth0` interface for `centralRouter`
-    ```bash
-    vagrant ssh inetRouter
-    ssh vagrant@192.168.255.2 # password 111111
 
-    sudo nmcli device disconnect eth0
-    sudo nmcli connection delete "System eth0"
+1. Setup ssh tunnels (we need some handy way to connect to vms after removing eth0)
+    ```bash
+    ./host/setup-ssh-tunnels.sh
     ```
 
-1. SSH to central router and disable `eth0` for every vm (_centralServer_, _office1Router_, _office2Router_, _office1Server_, _office2Server_).
+1. Disable eth0 on vms within private network
     ```bash
-    vagrant ssh inetRouter
-    ssh vagrant@192.168.255.2 # password 111111
-    ssh vagrant@192.168.x.x # password 111111
-
-    sudo nmcli device disconnect eth0
-    sudo nmcli connection delete "System eth0"
+    ./host/disable-all-if-eth0.sh
     ```
 
-#### Check Solution
-1. SSH to any machine through **inetRouter**
+1. Connect to any vm, check routes and connectivity
     ```bash
-    vagrant ssh inetRouter
-    ssh vagrant@192.168.x.x #password 111111
-    ```
-
-1.  Check routes table
-    ```bash
+    ssh -i ~/.vagrant.d/insecure_private_key -p port -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null vagrant@127.0.0.1
     ip route
+    ping some-internal-ip
+    ping some-external-ip
     ```
 
-1. Check connectivity
+    * ports mapping:
+        * centralRouter: 8001
+        * centralServer: 8002
+        * office1Router: 8003
+        * office1Server: 8004
+        * office2Router: 8005
+        * office2Server: 8006
+
+#### After
+1. Stop ssh tunnels
     ```bash
-    ping google.com
-    ping 192.168.x.x
-
-    tracepath -n google.com
-    tracepath -n 192.168.x.x
+    pkill -x ssh
     ```
-
-#### Stop all ssh tunnels
-```bash
-pkill -x ssh
-```

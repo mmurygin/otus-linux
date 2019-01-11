@@ -6,6 +6,9 @@ MACHINES = {
         :net => [
             { ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
         ],
+        routes: [
+            { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "System eth1" },
+        ],
         masquerade: true,
         isRouter: true,
     },
@@ -15,7 +18,7 @@ MACHINES = {
             { ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
             { ip: '192.168.0.33', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "hw-net" },
             { ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
-            { ip: '192.168.254.1', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
+            { ip: '192.168.254.1', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
         ],
         gateway: "192.168.255.1",
         dns: "8.8.8.8",
@@ -30,7 +33,7 @@ MACHINES = {
     },
     :office1Router => {
         :net => [
-            { ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
+            { ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
             { ip: '192.168.2.1', adapter: 3, netmask: "255.255.255.192", virtualbox__intnet: "dev1-net" },
             { ip: '192.168.2.65', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test1-net" },
             { ip: '192.168.2.129', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "managers1-net" },
@@ -48,7 +51,7 @@ MACHINES = {
     },
     :office2Router => {
         :net => [
-            { ip: '192.168.254.3', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-in" },
+            { ip: '192.168.254.3', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
             { ip: '192.168.1.1', adapter: 3, netmask: "255.255.255.128", virtualbox__intnet: "dev2-net" },
             { ip: '192.168.1.129', adapter: 4, netmask: "255.255.255.192", virtualbox__intnet: "test2-net" },
             { ip: '192.168.1.193', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "hw2-net" },
@@ -79,23 +82,49 @@ Vagrant.configure("2") do |config|
                 box.vm.network "private_network", ipconf
             end
 
-            if boxconfig.key?("masquerade") and boxconfig[:masquerade] then
-                iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+            if boxconfig[:routes] then
+                boxconfig[:routes].each do |route|
+                    box.vm.provision "shell" do |s|
+                        s.inline = <<-SHELL
+                            nmcli connection modify "$1" ipv4.routes "$2 $3"
+                            nmcli connection up "$1"
+                        SHELL
+                        s.args = [route[:connection], route[:dst], route[:src]]
+                    end
+                end
             end
 
-            if boxconfig.key?("isRouter") and boxconfig[:isRouter] then
-                echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
-                sysctl -p /etc/sysctl.conf
+            if boxconfig[:masquerade] then
+                box.vm.provision "shell", inline: <<-SHELL
+                    iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
+                SHELL
             end
 
-            if boxconfig.key?("dns") then
-                nmcli connection modify "System eth1" ipv4.dns boxconfig[:dns]
-                nmcli connection up "System eth1"
+            if boxconfig[:isRouter] then
+                box.vm.provision "shell", inline: <<-SHELL
+                    echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+                    sysctl -p /etc/sysctl.conf
+                SHELL
             end
 
-            if boxconfig.key?("gateway") then
-                nmcli connection modify "System eth1" ipv4.gateway boxconfig[:gateway]
-                nmcli connection up "System eth1"
+            if boxconfig[:dns] then
+                box.vm.provision "shell" do |s|
+                    s.inline = <<-SHELL
+                        nmcli connection modify "System eth1" ipv4.dns "$1"
+                        nmcli connection up "System eth1"
+                    SHELL
+                    s.args = [boxconfig[:dns]]
+                end
+            end
+
+            if boxconfig[:gateway] then
+                box.vm.provision "shell" do |s|
+                    s.inline = <<-SHELL
+                        nmcli connection modify "System eth1" ipv4.gateway "$1"
+                        nmcli connection up "System eth1"
+                    SHELL
+                    s.args = [boxconfig[:gateway]]
+                end
             end
         end
     end
