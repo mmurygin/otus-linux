@@ -45,7 +45,7 @@
 
 1. Check network settings and connectivity
     ```bash
-        ip route
+    ip route
     tracepath -n some-ip
     ping some-internal-ip
     ping some-external-ip
