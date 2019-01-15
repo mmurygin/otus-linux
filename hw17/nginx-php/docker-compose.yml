@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:1.15.8
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/opt/app
+      - ./site.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - php-app
+  php:
+    image: php:fpm
+    volumes:
+      - ./app:/opt/app
+    networks:
+      - php-app
+
+networks:
+  php-app:
