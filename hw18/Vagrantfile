@@ -4,10 +4,16 @@
 MACHINES = {
     :inetRouter => {
         net: [
-            { ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
+            { adapter: 2, virtualbox__intnet: "router-net" },
+            { adapter: 3, virtualbox__intnet: "router-net" },
         ],
+        bonding: {
+            conName: "mybond0",
+            address: "192.168.255.1/30",
+            devices: "eth1 eth2",
+        },
         routes: [
-            { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "System eth1" },
+            { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "mybond0" },
         ],
         masquerade: true,
         isRouter: true,
@@ -83,11 +89,33 @@ Vagrant.configure("2") do |config|
             box.ssh.insert_key = false
             box.ssh.forward_agent = true
 
+            # box.vm.provision "shell", inline: "yum install -y tcpdump"
+
             boxconfig[:net].each do |ipconf|
                 box.vm.network "private_network", ipconf
             end
 
-            # box.vm.provision "shell", inline: "yum install -y tcpdump"
+            if boxconfig[:bonding] then
+                bonding = boxconfig[:bonding]
+                box.vm.provision "shell" do |s|
+                    s.inline = <<-SHELL
+                        # delete default inactive connections
+                        nmcli connection delete ''
+
+                        modprobe bonding
+                        nmcli connection add type bond con-name "$1" ifname bond0 mode balance-rr
+
+                        nmcli connection modify "$1" ipv4.addresses "$2" ipv4.method manual
+                        nmcli connection up "$1"
+
+                        for device in $3; do
+                            nmcli connection add type bond-slave con-name "$1-$device" ifname "$device" master bond0
+                            nmcli connection up "$1-$device"
+                        done
+                    SHELL
+                    s.args = [bonding[:conName], bonding[:address], bonding[:devices]]
+                end
+            end
 
             if boxconfig[:masquerade] then
                 box.vm.provision "shell", inline: <<-SHELL
