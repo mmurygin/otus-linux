@@ -15,3 +15,4 @@
 - [HW14: Centralized logging](hw14)
 - [HW16: Networking](hw16)
 - [HW17: Docker](hw17)
+- [HW18: VLANs and Bond](hw18)
