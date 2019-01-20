@@ -20,18 +20,24 @@ MACHINES = {
     },
     :centralRouter => {
         net: [
-            { ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
-            { ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
-            { ip: '192.168.0.33', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "hw-net" },
-            { ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
-            { ip: '192.168.255.9', adapter: 6, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
+            { adapter: 2, virtualbox__intnet: "router-net" },
+            { adapter: 3, virtualbox__intnet: "router-net" },
+            { ip: '192.168.0.1', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
+            { ip: '192.168.0.33', adapter: 5, netmask: "255.255.255.240", virtualbox__intnet: "hw-net" },
+            { ip: '192.168.0.65', adapter: 6, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net" },
+            { ip: '192.168.255.9', adapter: 7, netmask: "255.255.255.248", virtualbox__intnet: "central-net" },
         ],
+        bonding: {
+            conName: "mybond0",
+            address: "192.168.255.2/30",
+            devices: "eth1 eth2",
+        },
         routes: [
-            { dst: "192.168.1.0/24", src: "192.168.255.11", connection: "System eth5" },
-            { dst: "192.168.2.0/24", src: "192.168.255.10", connection: "System eth5" },
+            { dst: "192.168.1.0/24", src: "192.168.255.11", connection: "System eth6" },
+            { dst: "192.168.2.0/24", src: "192.168.255.10", connection: "System eth6" },
         ],
-        gateway: { ip: "192.168.255.1", connection: "System eth1" },
-        dns: { ip: "8.8.8.8", connection: "System eth1" },
+        gateway: { ip: "192.168.255.1", connection: "mybond0" },
+        dns: { ip: "8.8.8.8", connection: "mybond0" },
         isRouter: true,
     },
     :centralServer => {
