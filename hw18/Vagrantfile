@@ -95,7 +95,7 @@ Vagrant.configure("2") do |config|
             box.ssh.insert_key = false
             box.ssh.forward_agent = true
 
-            # box.vm.provision "shell", inline: "yum install -y tcpdump"
+            box.vm.provision "shell", inline: "yum install -y tcpdump"
 
             boxconfig[:net].each do |ipconf|
                 box.vm.network "private_network", ipconf
@@ -109,15 +109,15 @@ Vagrant.configure("2") do |config|
                         nmcli connection delete ''
 
                         modprobe bonding
-                        nmcli connection add type bond con-name "$1" ifname bond0 mode balance-rr
+                        nmcli connection add type bond con-name "$1" ifname bond0 mode active-backup
 
                         nmcli connection modify "$1" ipv4.addresses "$2" ipv4.method manual
-                        nmcli connection up "$1"
 
                         for device in $3; do
                             nmcli connection add type bond-slave con-name "$1-$device" ifname "$device" master bond0
-                            nmcli connection up "$1-$device"
                         done
+
+                        nmcli connection up "$1"
                     SHELL
                     s.args = [bonding[:conName], bonding[:address], bonding[:devices]]
                 end
