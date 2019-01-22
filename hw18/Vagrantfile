@@ -35,6 +35,7 @@ MACHINES = {
         routes: [
             { dst: "192.168.1.0/24", src: "192.168.255.11", connection: "System eth6" },
             { dst: "192.168.2.0/24", src: "192.168.255.10", connection: "System eth6" },
+            { dst: "192.168.100.0/24", src: "192.168.255.10", connection: "System eth6" },
         ],
         gateway: { ip: "192.168.255.1", connection: "mybond0" },
         dns: { ip: "8.8.8.8", connection: "mybond0" },
@@ -141,14 +142,14 @@ Vagrant.configure("2") do |config|
             box.ssh.insert_key = false
             box.ssh.forward_agent = true
 
-            box.vm.provision "shell", inline: "yum install -y tcpdump"
+            # box.vm.provision "shell", inline: "yum install -y tcpdump"
 
             boxconfig[:net].each do |ipconf|
                 box.vm.network "private_network", ipconf
             end
 
             # delete default inactive connections
-            # box.vm.provision "shell", inline: "nmcli connection delete ''"
+            box.vm.provision "shell", inline: "nmcli connection delete '' 2>/dev/null || :"
 
             if boxconfig[:bonding] then
                 bonding = boxconfig[:bonding]
