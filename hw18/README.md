@@ -2,12 +2,11 @@
 
 ## Introduction
 1. [Homework](homework.md)
-1. [Network-diagram](network-diagram.png)
 
 ## Solution
 
 ### Before
-1. Please make sure that ports 2222, 8001-8008 are opened on your localhost
+1. Please make sure that ports 2222, 8001-8010 are opened on your localhost
     ```bash
     ss -ltn
     ```
@@ -33,6 +32,8 @@
         * office2Server: 8006
         * testServer1: 8007
         * testClient1: 8008
+        * testServer2: 8009
+        * testClient2: 8010
 
 1. Check network settings and connectivity
     ```bash

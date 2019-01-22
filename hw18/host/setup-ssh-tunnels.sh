@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo IMPORTANT: Please make sure that ports 8001-8008 are opened
+echo IMPORTANT: Please make sure that ports 8001-8010 are opened
 
 private_key="${HOME}/.vagrant.d/insecure_private_key"
 ssh_options="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
@@ -30,11 +30,19 @@ ssh -i "$private_key" -L 8006:192.168.1.2:22 $ssh_options -p 8005 -N vagrant@127
 sleep 1
 
 echo Forwarding testServer1 to localhost:8007
-ssh -i "$private_key" -L 8007:10.10.10.1:22 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
+ssh -i "$private_key" -L 8007:192.168.2.66:22 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
 sleep 1
 
 echo Forwarding testClient1 to localhost:8008
-ssh -i "$private_key" -L 8008:10.10.10.254:22 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
+ssh -i "$private_key" -L 8008:192.168.2.3:22 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
+sleep 1
+
+echo Forwarding testServer2 to localhost:8009
+ssh -i "$private_key" -L 8009:192.168.2.67 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
+sleep 1
+
+echo Forwarding testClient2 to localhost:8010
+ssh -i "$private_key" -L 8010:192.168.2.4:22 $ssh_options -p 8003 -N vagrant@127.0.0.1 &
 sleep 1
 
 echo "Done"
