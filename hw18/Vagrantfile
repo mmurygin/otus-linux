@@ -14,6 +14,7 @@ MACHINES = {
         },
         routes: [
             { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "mybond0" },
+            { dst: "10.10.10.0/24", src: "192.168.255.2", connection: "mybond0" },
         ],
         masquerade: true,
         isRouter: true,
@@ -35,7 +36,7 @@ MACHINES = {
         routes: [
             { dst: "192.168.1.0/24", src: "192.168.255.11", connection: "System eth6" },
             { dst: "192.168.2.0/24", src: "192.168.255.10", connection: "System eth6" },
-            { dst: "192.168.100.0/24", src: "192.168.255.10", connection: "System eth6" },
+            { dst: "10.10.10.0/24", src: "192.168.255.10", connection: "System eth6" },
         ],
         gateway: { ip: "192.168.255.1", connection: "mybond0" },
         dns: { ip: "8.8.8.8", connection: "mybond0" },
@@ -59,8 +60,8 @@ MACHINES = {
             { adapter: 8, virtualbox__intnet: "vlan-test" },
         ],
         vlans: [
-            { vlanID: 2, interface: "eth6", ip: "192.168.100.10/24" },
-            { vlanID: 3, interface: "eth7", ip: "192.168.100.10/24" },
+            { vlanID: 2, interface: "eth6", ip: "10.10.10.10/24" },
+            { vlanID: 3, interface: "eth7", ip: "10.10.10.10/24" },
         ],
         gateway: { ip: "192.168.255.9", connection: "System eth1" },
         dns: { ip: "8.8.8.8", connection: "System eth1" },
@@ -71,9 +72,9 @@ MACHINES = {
             { adapter: 2, virtualbox__intnet: "vlan-test" },
         ],
         vlans: [
-            { vlanID: 2, interface: "eth1", ip: "192.168.100.254/24"},
+            { vlanID: 2, interface: "eth1", ip: "10.10.10.254/24"},
         ],
-        gateway: { ip: "192.168.100.10", connection: "VLAN2" },
+        gateway: { ip: "10.10.10.10", connection: "VLAN2" },
         dns: { ip: "8.8.8.8", connection: "VLAN2" },
     },
     :testServer1 => {
@@ -81,9 +82,9 @@ MACHINES = {
             { adapter: 2, virtualbox__intnet: "vlan-test" },
         ],
         vlans: [
-            { vlanID: 2, interface: "eth1", ip: "192.168.100.1/24"},
+            { vlanID: 2, interface: "eth1", ip: "10.10.10.1/24"},
         ],
-        gateway: { ip: "192.168.100.10", connection: "VLAN2" },
+        gateway: { ip: "10.10.10.10", connection: "VLAN2" },
         dns: { ip: "8.8.8.8", connection: "VLAN2" },
     },
     :testClient2 => {
@@ -91,9 +92,9 @@ MACHINES = {
             { adapter: 2, virtualbox__intnet: "vlan-test" },
         ],
         vlans: [
-            { vlanID: 3, interface: "eth1", ip: "192.168.100.254/24"},
+            { vlanID: 3, interface: "eth1", ip: "10.10.10.254/24"},
         ],
-        gateway: { ip: "192.168.100.10", connection: "VLAN3" },
+        gateway: { ip: "10.10.10.10", connection: "VLAN3" },
         dns: { ip: "8.8.8.8", connection: "VLAN3" },
     },
     :testServer2 => {
@@ -101,9 +102,9 @@ MACHINES = {
             { adapter: 2, virtualbox__intnet: "vlan-test" },
         ],
         vlans: [
-            { vlanID: 3, interface: "eth1", ip: "192.168.100.1/24"},
+            { vlanID: 3, interface: "eth1", ip: "10.10.10.1/24"},
         ],
-        gateway: { ip: "192.168.100.10", connection: "VLAN3" },
+        gateway: { ip: "10.10.10.10", connection: "VLAN3" },
         dns: { ip: "8.8.8.8", connection: "VLAN3" },
     },
     :office1Server => {
