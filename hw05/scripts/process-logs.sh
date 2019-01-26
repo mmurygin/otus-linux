@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG_FILE_NAME=/var/log/log-processor.log
+declare -r LOG_FILE_NAME=/var/log/log-processor.log
 
 function get_current_date() {
   date +"%b %d %H:%M:%S"
@@ -16,6 +16,11 @@ echo "[$to_date] Processing Logs" >> "$LOG_FILE_NAME"
 
 echo "Report from $from_date to $to_date"
 
-echo "Some data..."
+echo "The more frequent IP addresses: "
+/vagrant/scripts/print-source-ips.sh
 
-echo "Last processed line: "
+echo "Return codes: "
+/vagrant/scripts/print-status-codes.sh
+
+echo "Errors:"
+/vagrant/scripts/print-errors.sh
