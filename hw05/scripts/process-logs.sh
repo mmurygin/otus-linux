@@ -1,32 +1,57 @@
 #!/bin/bash
 
-declare -r LOG_FILE_NAME=/var/log/log-processor.log
-declare -r ACCESS_LOG=logs/access.log
-declare -r ERROR_LOG=logs/error.log
+declare -r RUN_LOG=/var/log/log-processor.log
+declare -r ACCESS_LOG=/vagrant/logs/access.log
+declare -r ERROR_LOG=/vagrant/logs/error.log
 
-function get_current_date() {
-  date +"%b %d %H:%M:%S"
-}
+declare -r TMP_ACCESS=$(mktemp)
+declare -r TMP_ERROR=$(mktemp)
 
-if [[ -e "$LOG_FILE_NAME" ]]; then
-  from_date=$(tail -1 "$LOG_FILE_NAME" | sed 's_\[\(.*\)\] Processng logs_\1_')
+if [[ -e "$RUN_LOG" ]]; then
+    from_date=$(sed -rn 's/Last run: (.*)/\1/p' "$RUN_LOG")
+
+    access_line_processed=$(sed -rn 's/Access lines processed: ([0-9]+)/\1/p' "$RUN_LOG")
+    error_lines_processed=$(sed -rn 's/Error lines processed: ([0-9]+)/\1/p' "$RUN_LOG")
 fi
 
-to_date=$(get_current_date)
+if [[ ! $from_date ]]; then
+    from_date="service first start"
+fi
 
-echo "$to_date" >> "$LOG_FILE_NAME"
+if [[ $access_line_processed ]]; then
+    sed -e "1,${access_line_processed}d" "$ACCESS_LOG" > "$TMP_ACCESS"
+else
+    cp "$ACCESS_LOG" "$TMP_ACCESS"
+fi
+
+if [[ $error_lines_processed ]]; then
+    sed -e "1,${error_lines_processed}d" "$ERROR_LOG" > "$TMP_ERROR"
+else
+    cp "$ERROR_LOG" "$TMP_ERROR"
+fi
+
+to_date=$(date +"%b %d %H:%M:%S")
 
 echo "Report from $from_date to $to_date"
 echo
 
 echo "The more frequent IP addresses: "
-/vagrant/scripts/print-source-ips.sh "$ACCESS_LOG" "$ERROR_LOG"
+/vagrant/scripts/print-source-ips.sh "$TMP_ACCESS" "$TMP_ERROR"
 echo
 
 echo "Return codes: "
-/vagrant/scripts/print-status-codes.sh "$ACCESS_LOG"
+/vagrant/scripts/print-status-codes.sh "$TMP_ACCESS"
 echo
 
 echo "Errors:"
-/vagrant/scripts/print-errors.sh "$ERROR_LOG"
+/vagrant/scripts/print-errors.sh "$TMP_ERROR"
 echo
+
+cat > "$RUN_LOG" <<EOF
+Last run: $to_date
+Access lines processed: $(wc -l $ACCESS_LOG | cut -d" " -f1)
+Error lines processed: $(wc -l $ERROR_LOG | cut -d" " -f1)
+EOF
+
+rm -f "$TMP_ACCESS"
+rm -f "$TMP_ERROR"
