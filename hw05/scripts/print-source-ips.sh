@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -r ACCESS_LOG=logs/access.log
-declare -r ERROR_LOG=logs/error.log
+declare -r ACCESS_LOG="$1"
+declare -r ERROR_LOG="$2"
 
 declare -A ips
 for ip in $(grep -oP '^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' "$ACCESS_LOG"); do

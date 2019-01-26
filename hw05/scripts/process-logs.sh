@@ -1,6 +1,8 @@
 #!/bin/bash
 
 declare -r LOG_FILE_NAME=/var/log/log-processor.log
+declare -r ACCESS_LOG=logs/access.log
+declare -r ERROR_LOG=logs/error.log
 
 function get_current_date() {
   date +"%b %d %H:%M:%S"
@@ -18,11 +20,11 @@ echo "Report from $from_date to $to_date"
 echo
 
 echo "The more frequent IP addresses: "
-/vagrant/scripts/print-source-ips.sh
+/vagrant/scripts/print-source-ips.sh "$ACCESS_LOG" "$ERROR_LOG"
 echo
 
 echo "Return codes: "
-/vagrant/scripts/print-status-codes.sh
+/vagrant/scripts/print-status-codes.sh "$ACCESS_LOG"
 echo
 
 echo "Errors:"
