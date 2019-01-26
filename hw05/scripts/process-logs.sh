@@ -12,15 +12,19 @@ fi
 
 to_date=$(get_current_date)
 
-echo "[$to_date] Processing Logs" >> "$LOG_FILE_NAME"
+echo "$to_date" >> "$LOG_FILE_NAME"
 
 echo "Report from $from_date to $to_date"
+echo
 
 echo "The more frequent IP addresses: "
 /vagrant/scripts/print-source-ips.sh
+echo
 
 echo "Return codes: "
 /vagrant/scripts/print-status-codes.sh
+echo
 
 echo "Errors:"
 /vagrant/scripts/print-errors.sh
+echo
