@@ -28,5 +28,5 @@ echo "Return codes: "
 echo
 
 echo "Errors:"
-/vagrant/scripts/print-errors.sh
+/vagrant/scripts/print-errors.sh "$ERROR_LOG"
 echo

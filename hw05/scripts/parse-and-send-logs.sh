@@ -1,5 +1,5 @@
 #!/bin/bash
 
-MAILTO="muriginm@gmail.com"
+export MAILTO="muriginm@gmail.com"
 
 /vagrant/scripts/solo.sh /vagrant/scripts/process-logs.sh
