@@ -1,9 +1,5 @@
 #!/bin/bash
 
-declare -r RUN_LOG=/var/log/log-processor.log
-declare -r ACCESS_LOG=/vagrant/logs/access.log
-declare -r ERROR_LOG=/vagrant/logs/error.log
-
 declare -r TMP_ACCESS=$(mktemp)
 declare -r TMP_ERROR=$(mktemp)
 

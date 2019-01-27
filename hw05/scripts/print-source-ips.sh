@@ -21,6 +21,11 @@ for ip in $(sed -nr 's/.*client: ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}
     fi
 done
 
+TMP_RESULT=$(mktemp)
+
 for ip in "${!ips[@]}"; do
-    echo ${ip}: ${ips["$ip"]}
+    echo ${ip}: ${ips["$ip"]} >> "$TMP_RESULT"
 done
+
+sort -rnk 2 "$TMP_RESULT" | sed -ne '1,10p'
+rm "$TMP_RESULT"
