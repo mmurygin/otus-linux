@@ -11,11 +11,17 @@
 1. должна быть реализована защита от мультизапуска
 
 ## Getting Started
-1. Run VM
+1. Set your email, the number of top ips, the number of top urls in `config.ini`
 
+1. Run VM
     ```bash
     vagrant up
     ```
 
-1. Set your email inside `provision.sh`
+1. Check your email (email will come within an our)
+
+1. To send email right now:
+    ```bash
+    vagrant ssh -c 'sudo run-parts /etc/cron.hourly'
+    ```
 

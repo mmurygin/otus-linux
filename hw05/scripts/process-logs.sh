@@ -1,7 +1,7 @@
 #!/bin/bash
 
-declare -r TMP_ACCESS=$(mktemp)
-declare -r TMP_ERROR=$(mktemp)
+declare -r TMP_ACCESS="$(mktemp)"
+declare -r TMP_ERROR="$(mktemp)"
 
 if [[ -e "$RUN_LOG" ]]; then
     from_date=$(sed -rn 's/Last run: (.*)/\1/p' "$RUN_LOG")
@@ -39,12 +39,12 @@ echo "The most frequent URLs:"
 /vagrant/scripts/print-urls.sh "$TMP_ACCESS"
 echo
 
-echo "Return codes: "
-/vagrant/scripts/print-status-codes.sh "$TMP_ACCESS"
-echo
-
 echo "Errors:"
 /vagrant/scripts/print-errors.sh "$TMP_ERROR"
+echo
+
+echo "Return codes: "
+/vagrant/scripts/print-status-codes.sh "$TMP_ACCESS"
 echo
 
 cat > "$RUN_LOG" <<EOF
