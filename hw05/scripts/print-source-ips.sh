@@ -27,5 +27,5 @@ for ip in "${!ips[@]}"; do
     echo ${ip}: ${ips["$ip"]} >> "$TMP_RESULT"
 done
 
-sort -rnk 2 "$TMP_RESULT" | sed -ne '1,10p'
+sort -rnk 2 "$TMP_RESULT" | sed -ne "1,${TOP_SOURCE_IPS}p"
 rm "$TMP_RESULT"

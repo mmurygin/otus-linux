@@ -31,8 +31,12 @@ to_date=$(date +"%b %d %H:%M:%S")
 echo "Report from $from_date to $to_date"
 echo
 
-echo "The more frequent IP addresses: "
+echo "The most frequent IP addresses: "
 /vagrant/scripts/print-source-ips.sh "$TMP_ACCESS" "$TMP_ERROR"
+echo
+
+echo "The most frequent URLs:"
+/vagrant/scripts/print-urls.sh "$TMP_ACCESS"
 echo
 
 echo "Return codes: "
