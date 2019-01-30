@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
                   end
           end
 
- 	  box.vm.provision "shell", path: "provision.sh"
+# 	  box.vm.provision "shell", path: "provision.sh"
       end
   end
 end
