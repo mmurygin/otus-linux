@@ -1,7 +1,7 @@
 $TTL 3600
 $ORIGIN 50.168.192.in-addr.arpa.
 50.168.192.in-addr.arpa.  IN      SOA     ns01.dns.lab. root.dns.lab. (
-                            2711201407 ; serial
+                            3101201901 ; serial
                             3600       ; refresh (1 hour)
                             600        ; retry (10 minutes)
                             86400      ; expire (1 day)

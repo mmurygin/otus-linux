@@ -1,5 +1,5 @@
 $TTL 3600
-$ORIGIN dns.lab.
+$ORIGIN newdns.lab.
 @               IN      SOA     ns01.dns.lab. root.dns.lab. (
                             3101201901 ; serial
                             3600       ; refresh (1 hour)
@@ -14,5 +14,5 @@ $ORIGIN dns.lab.
 ; DNS Servers
 ns01            IN      A       192.168.50.10
 ns02            IN      A       192.168.50.11
-web1            IN      A       192.168.50.15
-web2            IN      A       192.168.50.16
+www             IN      A       192.168.50.15
+www             IN      A       192.168.50.16
