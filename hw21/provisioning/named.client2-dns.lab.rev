@@ -1,6 +1,6 @@
 $TTL 3600
-$ORIGIN newdns.lab.
-@               IN      SOA     ns01.dns.lab. root.dns.lab. (
+$ORIGIN 50.168.192.in-addr.arpa.
+50.168.192.in-addr.arpa.  IN      SOA     ns01.dns.lab. root.dns.lab. (
                             3101201902 ; serial
                             3600       ; refresh (1 hour)
                             600        ; retry (10 minutes)
@@ -12,7 +12,7 @@ $ORIGIN newdns.lab.
                 IN      NS      ns02.dns.lab.
 
 ; DNS Servers
-ns01            IN      A       192.168.50.10
-ns02            IN      A       192.168.50.11
-www             IN      A       192.168.50.15
-www             IN      A       192.168.50.16
+10              IN      PTR     ns01.dns.lab.
+11              IN      PTR     ns02.dns.lab.
+15              IN      PTR     web1.dns.lab.
+16              IN      PTR     web2.dns.lab.
