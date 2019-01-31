@@ -16,3 +16,4 @@
 - [HW16: Networking](hw16)
 - [HW17: Docker](hw17)
 - [HW18: VLANs and Bond](hw18)
+- [HW21: DNS](hw21)
