@@ -14,3 +14,5 @@ $ORIGIN dns.lab.
 ; DNS Servers
 ns01            IN      A       192.168.50.10
 ns02            IN      A       192.168.50.11
+web1            IN      A       192.168.50.15
+web2            IN      A       192.168.50.16

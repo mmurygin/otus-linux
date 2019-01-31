@@ -7,7 +7,7 @@
 - nsupdate is available in the ddns.lab zone. Ex:
     nsupdate -k /etc/named.zonetransfer.key
     server 192.168.50.10
-    zone ddns.lab 
+    zone ddns.lab
     update add www.ddns.lab. 60 A 192.168.50.15
     send
 

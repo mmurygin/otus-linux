@@ -3,11 +3,9 @@
   become: True
   tasks:
   - name: install packages
-    yum: name={{ item }} state=latest
-    with_items:
-      - bind
-      - bind-utils
-      - ntp
+    yum:
+      name: ["bind", "bind-utils", "ntp"]
+      state: present
 
   - name: copy transferkey to all servers and the client
     copy: src=named.zonetransfer.key dest=/etc/named.zonetransfer.key owner=root group=named mode=0644
@@ -45,6 +43,16 @@
     service: name=named state=restarted enabled=yes
 
 - hosts: client1
+  become: True
+  tasks:
+  - name: copy resolv.conf to the client
+    copy: src=client-resolv.conf dest=/etc/resolv.conf owner=root group=root mode=0644
+  - name: copy rndc conf file
+    copy: src=rndc.conf dest=/home/vagrant/rndc.conf owner=vagrant group=vagrant mode=0644
+  - name: copy motd to the client
+    copy: src=client-motd dest=/etc/motd owner=root group=root mode=0644
+
+- hosts: client2
   become: True
   tasks:
   - name: copy resolv.conf to the client
