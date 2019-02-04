@@ -1,7 +1,0 @@
----
-- name: install nmcli dependencies
-  yum:
-    name:
-      - python-gobject
-      - NetworkManager-glib
-    state: present
