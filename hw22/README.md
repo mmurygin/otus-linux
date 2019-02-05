@@ -13,18 +13,44 @@
 ## Solution
 1. Run environment
     ```bash
-    vagrant up
-    ./host/setup-ssh-tunnels.sh
-    ./host/disable-all-if-eth0.sh
+    ./setup.sh
     ```
 
-1. Allow assymetric routing
+1. Check knoking port
     ```bash
-    ./host/allow-assymetric-routing.sh
+    ssh -i ~/.vagrant.d/insecure_private_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null vagrant@127.0.0.1 -p 8001
+
+    # make sure that ssh port is closed
+    ssh 192.168.255.1
+
+    # open 22 port
+    /vagrant/guest/knock.sh open
+
+    # run ssh session
+    ssh 192.168.255.1
+    exit
+
+    # close 22 port
+    /vagrant/guest/knock.sh open
     ```
 
-### Check Results
-1. Connect to any vm
+1. Check port forwarding
+    ```bash
+    curl localhost:8080
+    ```
+
+    * the above command doesn't work, although it should!
+
+    * Port forwarding is setup correctly. To check port forwarding:
+
+    ```bash
+    vagrant ssh inetRouter2 -c 'curl -I 192.168.255.2:8080'
+    ```
+
+    * but there is some issue with routing. For some reason inetRouter does not forward response between its interfaces. I see the response packets on eth1, but there is nothing on eth0.
+
+## Usefull info
+1. Connect to a private vm
     ```bash
     ssh -i ~/.vagrant.d/insecure_private_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null vagrant@127.0.0.1 -p port
     ```

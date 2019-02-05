@@ -10,13 +10,7 @@ MACHINES = {
             { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "System eth1" },
         ],
         masquerade: true,
-        allowRouting: [{
-            from: "eth0",
-            to: "eth1",
-        }, {
-            from: "eth1",
-            to: "eth0",
-        }],
+        router: true,
     },
     :inetRouter2 => {
         net: [
@@ -32,6 +26,7 @@ MACHINES = {
             toport: 8080,
             toaddr: "192.168.255.2",
         }],
+        router: true,
     },
     :centralRouter => {
         net: [
@@ -46,13 +41,7 @@ MACHINES = {
             toport: 80,
             toaddr: "192.168.0.2",
         }],
-        allowRouting: [{
-            from: "eth1",
-            to: "eth2",
-        }, {
-            from: "eth2",
-            to: "eth1",
-        }],
+        router: true,
     },
     :centralServer => {
         net: [
@@ -60,7 +49,7 @@ MACHINES = {
         ],
         gateway: { ip: "192.168.0.1", connection: "System eth1" },
         dns: { ip: "8.8.8.8", connection: "System eth1" },
-        installNginx: true,
+        nginx: true,
     },
 }
 
@@ -76,17 +65,21 @@ Vagrant.configure("2") do |config|
                 box.vm.network "private_network", ipconf
             end
 
-            if boxconfig[:extForwardedPorts] then
-                boxconfig[:extForwardedPorts].each do |p_conf|
-                    box.vm.network "forwarded_port", p_conf
-                end
-            end
+            ######################## configure vms #############################
+            case boxname.to_s
+            when "inetRouter"
+                box.vm.provision "shell", inline: <<-SHELL
+                    iptables -A INPUT -p tcp --dport 22 -i eth1 -j REJECT
 
-            box.vm.provision "shell", inline: <<-SHELL
-                systemctl enable --now firewalld
-            SHELL
-
-            if boxconfig[:installNginx] then
+                    yum install -y http://li.nux.ro/download/nux/misc/el6/i386/knock-server-0.5-7.el6.nux.i686.rpm
+                    cp /vagrant/guest/knockd.conf /etc/knockd.conf
+                    systemctl start knockd
+                SHELL
+            when "centralRouter"
+                box.vm.provision "shell", inline: <<-SHELL
+                    yum install -y nmap
+                SHELL
+            when "centralServer"
                 box.vm.provision "shell", inline: <<-SHELL
                     yum install -y epel-release
                     yum install -y nginx
@@ -94,20 +87,17 @@ Vagrant.configure("2") do |config|
                 SHELL
             end
 
-            if boxconfig[:allowRouting] then
+            ###################### configure network ###########################
+            if boxconfig[:router] then
                 box.vm.provision "shell", inline: <<-SHELL
                     echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
                     sysctl -p /etc/sysctl.conf
                 SHELL
+            end
 
-                boxconfig[:allowRouting].each do |route|
-                    box.vm.provision "shell" do |s|
-                        s.inline = <<-SHELL
-                            firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -i $1 -o $2 -j ACCEPT
-                            firewall-cmd --reload
-                        SHELL
-                        s.args = [route[:from], route[:to]]
-                    end
+            if boxconfig[:extForwardedPorts] then
+                boxconfig[:extForwardedPorts].each do |p_conf|
+                    box.vm.network "forwarded_port", p_conf
                 end
             end
 
@@ -115,10 +105,9 @@ Vagrant.configure("2") do |config|
                 boxconfig[:intForwardedPorts].each do |p_conf|
                     box.vm.provision "shell" do |s|
                         s.inline = <<-SHELL
-                            firewall-cmd --permanent --add-forward-port=port=$1:proto=$2:toport=$3:toaddr=$4
-                            firewall-cmd --reload
+                            iptables -t nat -A PREROUTING -p $1 --dport $2 -j DNAT --to-destination $3:$4
                         SHELL
-                        s.args = [p_conf[:port], p_conf[:proto], p_conf[:toport], p_conf[:toaddr]]
+                        s.args = [p_conf[:proto], p_conf[:port], p_conf[:toaddr], p_conf[:toport]]
                     end
                 end
             end
