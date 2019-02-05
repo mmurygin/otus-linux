@@ -18,6 +18,11 @@
     ./host/disable-all-if-eth0.sh
     ```
 
+1. Allow assymetric routing
+    ```bash
+    ./host/allow-assymetric-routing.sh
+    ```
+
 ### Check Results
 1. Connect to any vm
     ```bash
