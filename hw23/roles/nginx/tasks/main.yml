@@ -12,4 +12,18 @@
     group: root
     mode: 0644
   notify: restart nginx
-
+- name: copy nginx configuration files
+  copy:
+    src: 'files/etc/nginx/nginx.conf'
+    dest: '/etc/nginx/nginx.conf'
+    owner: root
+    group: root
+    mode: 0644
+- name: copy web pages
+  copy:
+    src: files/var/www
+    dest: /var
+    owner: root
+    group: root
+    mode: 0644
+...

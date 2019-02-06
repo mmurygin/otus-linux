@@ -18,3 +18,4 @@
 - [HW18: VLANs and Bond](hw18)
 - [HW21: DNS](hw21)
 - [HW22: Firewall](hw22)
+- [HW23: Nginx](hw23)
