@@ -1,0 +1,9 @@
+---
+- name: Configure webserver with nginx
+  hosts: all
+  become: True
+  gather_facts: False
+  roles:
+    - epel
+    - nginx
+...

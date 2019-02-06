@@ -1,0 +1,15 @@
+---
+- name: install nginx
+  yum:
+    name: nginx
+    state: present
+  notify: restart nginx
+- name: copy nginx configuration files
+  copy:
+    src: 'files/etc/nginx/nginx.conf'
+    dest: '/etc/nginx/nginx.conf'
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx
+
