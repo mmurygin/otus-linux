@@ -4,43 +4,34 @@
 MACHINES = {
     :inetRouter => {
         net: [
-            { ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-net" },
+            { ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
         ],
         routes: [
             { dst: "192.168.0.0/16", src: "192.168.255.2", connection: "System eth1" },
         ],
-        masquerade: true,
         router: true,
     },
     :inetRouter2 => {
         net: [
-            { ip: '192.168.255.3', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-net" },
+            { ip: '192.168.254.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router2-net" },
+        ],
+        routes: [
+            { dst: "192.168.0.0/16", src: "192.168.254.2", connection: "System eth1" },
         ],
         extForwardedPorts: [{
-            guest: 8080,
+            guest: 80,
             host: 8080,
-        }],
-        intForwardedPorts: [{
-            port: 8080,
-            proto: "tcp",
-            toport: 8080,
-            toaddr: "192.168.255.2",
         }],
         router: true,
     },
     :centralRouter => {
         net: [
-            { ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.248", virtualbox__intnet: "router-net" },
-            { ip: '192.168.0.1', adapter: 3, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
+            { ip: '192.168.255.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net" },
+            { ip: '192.168.254.2', adapter: 3, netmask: "255.255.255.252", virtualbox__intnet: "router2-net" },
+            { ip: '192.168.0.1', adapter: 4, netmask: "255.255.255.240", virtualbox__intnet: "dir-net" },
         ],
         gateway: { ip: "192.168.255.1", connection: "System eth1" },
         dns: { ip: "8.8.8.8", connection: "System eth1" },
-        intForwardedPorts: [{
-            port: 8080,
-            proto: "tcp",
-            toport: 80,
-            toaddr: "192.168.0.2",
-        }],
         router: true,
     },
     :centralServer => {
@@ -49,7 +40,6 @@ MACHINES = {
         ],
         gateway: { ip: "192.168.0.1", connection: "System eth1" },
         dns: { ip: "8.8.8.8", connection: "System eth1" },
-        nginx: true,
     },
 }
 
@@ -69,11 +59,17 @@ Vagrant.configure("2") do |config|
             case boxname.to_s
             when "inetRouter"
                 box.vm.provision "shell", inline: <<-SHELL
+                    iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
                     iptables -A INPUT -p tcp --dport 22 -i eth1 -j REJECT
 
                     yum install -y http://li.nux.ro/download/nux/misc/el6/i386/knock-server-0.5-7.el6.nux.i686.rpm
                     cp /vagrant/guest/knockd.conf /etc/knockd.conf
                     systemctl start knockd
+                SHELL
+            when "inetRouter2"
+                box.vm.provision "shell", inline: <<-SHELL
+                    iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.0.2:8080
+                    iptables -t nat -A POSTROUTING --destination 192.168.0.2/32 -j SNAT --to-source 192.168.254.1
                 SHELL
             when "centralRouter"
                 box.vm.provision "shell", inline: <<-SHELL
@@ -83,6 +79,8 @@ Vagrant.configure("2") do |config|
                 box.vm.provision "shell", inline: <<-SHELL
                     yum install -y epel-release
                     yum install -y nginx
+
+                    sed -i 's/80 default_server/8080 default_server/g' /etc/nginx/nginx.conf
                     systemctl enable --now nginx
                 SHELL
             end
@@ -99,23 +97,6 @@ Vagrant.configure("2") do |config|
                 boxconfig[:extForwardedPorts].each do |p_conf|
                     box.vm.network "forwarded_port", p_conf
                 end
-            end
-
-            if boxconfig[:intForwardedPorts] then
-                boxconfig[:intForwardedPorts].each do |p_conf|
-                    box.vm.provision "shell" do |s|
-                        s.inline = <<-SHELL
-                            iptables -t nat -A PREROUTING -p $1 --dport $2 -j DNAT --to-destination $3:$4
-                        SHELL
-                        s.args = [p_conf[:proto], p_conf[:port], p_conf[:toaddr], p_conf[:toport]]
-                    end
-                end
-            end
-
-            if boxconfig[:masquerade] then
-                box.vm.provision "shell", inline: <<-SHELL
-                    iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE
-                SHELL
             end
 
             if boxconfig[:routes] then

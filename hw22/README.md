@@ -31,23 +31,13 @@
     exit
 
     # close 22 port
-    /vagrant/guest/knock.sh open
+    /vagrant/guest/knock.sh close
     ```
 
 1. Check port forwarding
     ```bash
-    curl localhost:8080
+    curl -I localhost:8080
     ```
-
-    * the above command doesn't work, although it should!
-
-    * Port forwarding is setup correctly. To check port forwarding:
-
-    ```bash
-    vagrant ssh inetRouter2 -c 'curl -I 192.168.255.2:8080'
-    ```
-
-    * but there is some issue with routing. For some reason inetRouter does not forward response between its interfaces. I see the response packets on eth1, but there is nothing on eth0.
 
 ## Usefull info
 1. Connect to a private vm
