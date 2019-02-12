@@ -3,6 +3,7 @@
   get_url:
     dest: /tmp/prometheus.tar.gz
     url: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
+  notify: restart prometheus
 
 - set_fact:
     src_path: /tmp/prometheus-{{ prometheus_version }}.linux-amd64
@@ -12,14 +13,23 @@
     src: /tmp/prometheus.tar.gz
     dest: /tmp
     remote_src: yes
+  notify: restart prometheus
 
 - name: Move exec file to /usr/bin
   copy:
       dest: /usr/bin/prometheus
       src: "{{ src_path }}/prometheus"
       remote_src: yes
+  notify: restart prometheus
 
 - name: Copy systemd-service unit file
   copy:
       dest: /etc/systemd/system/prometheus.service
       src: files/prometheus.service
+  notify: restart prometheus
+
+- name: Copy config file
+  template:
+      dest: /etc/prometheus.yml
+      src: templates/prometheus.yml
+  notify: restart prometheus
