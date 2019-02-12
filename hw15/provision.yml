@@ -1,0 +1,8 @@
+---
+- name: Setup prometheus server and agent
+  hosts: all
+  become: True
+  gather_facts: False
+  roles:
+    - prometheus
+...

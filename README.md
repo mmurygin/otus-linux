@@ -13,6 +13,7 @@
 - [HW11: Ansible](hw11)
 - [HW12: Tuning linux kernel and nginx](hw12)
 - [HW14: Centralized logging](hw14)
+- [HW15: Monitoring](hw15)
 - [HW16: Networking](hw16)
 - [HW17: Docker](hw17)
 - [HW18: VLANs and Bond](hw18)
