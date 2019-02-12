@@ -5,4 +5,5 @@
   gather_facts: False
   roles:
     - prometheus
+    - prometheus-node-exporter
 ...

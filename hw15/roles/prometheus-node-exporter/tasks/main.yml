@@ -1,0 +1,30 @@
+---
+- name: download sources
+  get_url:
+    dest: /tmp/node_exporter.tar.gz
+    url: https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz
+  notify: restart node_exporter
+
+- set_fact:
+    src_path: /tmp/node_exporter-{{ node_exporter_version }}.linux-amd64
+
+- name: unarchive sources
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /tmp
+    remote_src: yes
+  notify: restart node_exporter
+
+- name: Copy exec file to /usr/bin
+  copy:
+    dest: /usr/bin/node_exporter
+    src: "{{ src_path }}/node_exporter"
+    remote_src: yes
+    mode: 755
+  notify: restart node_exporter
+
+- name: Copy systemd-service unit file
+  copy:
+      dest: /etc/systemd/system/node_exporter.service
+      src: files/node_exporter.service
+  notify: restart node_exporter

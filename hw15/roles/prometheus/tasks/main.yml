@@ -13,23 +13,25 @@
     src: /tmp/prometheus.tar.gz
     dest: /tmp
     remote_src: yes
+    creates: "{{ src_path }}"
   notify: restart prometheus
 
-- name: Move exec file to /usr/bin
+- name: Copy exec file to /usr/bin
   copy:
-      dest: /usr/bin/prometheus
-      src: "{{ src_path }}/prometheus"
-      remote_src: yes
+    dest: /usr/bin/prometheus
+    src: "{{ src_path }}/prometheus"
+    remote_src: yes
+    mode: 755
   notify: restart prometheus
 
 - name: Copy systemd-service unit file
   copy:
-      dest: /etc/systemd/system/prometheus.service
-      src: files/prometheus.service
+    dest: /etc/systemd/system/prometheus.service
+    src: files/prometheus.service
   notify: restart prometheus
 
 - name: Copy config file
   template:
-      dest: /etc/prometheus.yml
-      src: templates/prometheus.yml
+    dest: /etc/prometheus.yml
+    src: templates/prometheus.yml
   notify: restart prometheus

@@ -1,0 +1,13 @@
+[Unit]
+Description=Node exporter for prometheus
+Documentation=https://github.com/prometheus/node_exporter
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node_exporter
+RestartSec=5
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
