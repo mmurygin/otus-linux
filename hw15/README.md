@@ -18,3 +18,7 @@
     vagrant up
     ```
 
+1. Go to localhost:3000
+1. Add datasource (prometheus at http://localhost:9090)
+1. Add dashboards
+

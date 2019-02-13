@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node_exporter --web.listen-address=0.0.0.0:9100 --log.level=info --collector.logind --collector.systemd --collector.tcpstat --collector.ntp --collector.interrupts --collector.meminfo_numa --collector.processes --no-collector.bonding --no-collector.bcache --no-collector.arp --no-collector.edac --no-collector.infiniband --no-collector.ipvs --no-collector.mdadm --no-collector.nfs --no-collector.nfsd --no-collector.textfile --no-collector.wifi --no-collector.hwmon --no-collector.conntrack --no-collector.timex --no-collector.zfs
+ExecStart=/usr/bin/node_exporter --web.listen-address=0.0.0.0:{{ node_exporter_port }} --log.level=info --collector.logind --collector.systemd --collector.tcpstat --collector.ntp --collector.interrupts --collector.meminfo_numa --collector.processes --no-collector.bonding --no-collector.bcache --no-collector.arp --no-collector.edac --no-collector.infiniband --no-collector.ipvs --no-collector.mdadm --no-collector.nfs --no-collector.nfsd --no-collector.textfile --no-collector.wifi --no-collector.hwmon --no-collector.conntrack --no-collector.timex --no-collector.zfs
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=10s
 SendSIGKILL=no
