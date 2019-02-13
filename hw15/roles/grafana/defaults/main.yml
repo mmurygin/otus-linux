@@ -1,4 +1,3 @@
 ---
-grafana_port: 9090
 grafana_version: 2.7.1
 ...

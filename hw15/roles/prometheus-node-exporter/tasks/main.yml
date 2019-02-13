@@ -24,7 +24,7 @@
   notify: restart node_exporter
 
 - name: Copy systemd-service unit file
-  copy:
-      dest: /etc/systemd/system/node_exporter.service
-      src: files/node_exporter.service
+  template:
+    dest: /etc/systemd/system/node_exporter.service
+    src: templates/node_exporter.service
   notify: restart node_exporter
