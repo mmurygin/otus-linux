@@ -7,5 +7,5 @@
       - bind-dyndb-ldap
     state: present
 
-# - name: install ipa-server
-#   command: ipa-server-install -U -r HOME.LOCAL -n home.local -p 12345678 -a 12345678 --hostname=ipaserver.home.local --ip-address=10.0.10.2 --setup-dns --auto-forwarders --no-reverse
+- name: install ipa-server
+  command: ipa-server-install -U -r HOME.LOCAL -n home.local -p 12345678 -a 12345678 --hostname=ipaserver.home.local --ip-address=10.0.10.2 --setup-dns --auto-forwarders --no-reverse
