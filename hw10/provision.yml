@@ -1,9 +1,16 @@
 ---
 - name: Configure ldap server
-  hosts: server
+  hosts: ipaserver
   become: True
   gather_facts: False
   roles:
+    - role: add-entry-to-hosts
+      ip: 10.0.10.2
+      dns: ipaserver.home.local
+    - role: add-entry-to-hosts
+      ip: 10.0.10.3
+      dns: client.home.local
+    # - ipa-server
 - name: Configure ldap client
   hosts: client
   become: True
