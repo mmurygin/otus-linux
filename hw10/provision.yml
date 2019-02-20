@@ -1,0 +1,12 @@
+---
+- name: Configure ldap server
+  hosts: server
+  become: True
+  gather_facts: False
+  roles:
+- name: Configure ldap client
+  hosts: client
+  become: True
+  gather_facts: False
+  roles:
+...

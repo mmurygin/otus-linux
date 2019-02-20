@@ -10,6 +10,7 @@
 - [HW7: PAM](hw07)
 - [HW8: RPM and YUM](hw08)
 - [HW9: Processes](hw09)
+- [HW10: LDAP](hw10)
 - [HW11: Ansible](hw11)
 - [HW12: Tuning linux kernel and nginx](hw12)
 - [HW14: Centralized logging](hw14)
