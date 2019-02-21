@@ -10,13 +10,15 @@
 - name: install ipa-server
   command: >
     ipa-server-install -U \
-      -r {{ realm }} \
-      -n {{ domain }} \
-      -p {{ password }} \
-      -a {{ password }} \
-      --hostname={{ host }} \
-      --ip-address={{ host_ip }} \
+      -r {{ ipa_realm }} \
+      -n {{ ipa_domain }} \
+      -p password \
+      -a password \
+      --hostname={{ hostname }} \
+      --ip-address={{ ipa_server_ip }} \
       --setup-dns \
       --auto-forwarders \
       --no-reverse
+  args:
+    creates: /etc/ipa/default.conf
 ...

@@ -9,11 +9,13 @@
   command: >
     ipa-client-install -U \
       -p admin \
-      -w {{ password }} \
+      -w password \
       --server={{ ipa_server_name }} \
       --ip-address={{ ipa_server_ip }} \
-      --domain={{ domain }} \
-      --realm={{ realm }} \
+      --domain={{ ipa_domain }} \
+      --realm={{ ipa_realm }} \
       --hostname={{ hostname }} \
       --mkhomedir
+  args:
+    creates: /etc/ipa/default.conf
 ...
