@@ -12,10 +12,11 @@ Vagrant.configure(2) do |config|
   config.vm.define "ipaserver" do |ipaserver|
     ipaserver.vm.hostname = "ipaserver"
     ipaserver.vm.network "private_network", ip: "10.0.10.2"
-    ipaserver.vm.network "forwarded_port", guest: 80, host: 8000
+    ipaserver.vm.network "forwarded_port", guest: 80, host: 80
 
     ipaserver.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
+      vb.gui = true
       vb.cpus = "2"
     end
   end

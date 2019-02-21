@@ -1,6 +1,6 @@
 ---
-- name: Configure ldap server
-  hosts: ipaserver
+- name: Add records to /etc/hosts
+  hosts: all
   become: True
   gather_facts: False
   roles:
@@ -10,10 +10,29 @@
     - role: add-entry-to-hosts
       ip: 10.0.10.3
       dns: client.home.local
-    - ipa-server
-- name: Configure ldap client
+
+- name: Configure ipa server
+  hosts: ipaserver
+  become: True
+  gather_facts: False
+  roles:
+    - role: ipa-server
+      realm: HOME.LOCAL
+      domain: home.local
+      hostname: ipaserver.home.local
+      ipa_server_ip: 10.0.10.2
+      password: password
+
+- name: Configure ipa client
   hosts: client
   become: True
   gather_facts: False
   roles:
+    - role: ipa-server
+      realm: HOME.LOCAL
+      domain: home.local
+      ipa_server_name: ipaserver.home.local
+      ipa_server_ip: 10.0.10.2
+      password: password
+      hostname: client.home.local
 ...
