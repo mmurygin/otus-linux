@@ -3,3 +3,4 @@
   systemd:
     name: autofs.service
     state: restarted
+    enabled: yes

@@ -3,3 +3,4 @@
   systemd:
     name: nfs.service
     state: restarted
+    enabled: yes
