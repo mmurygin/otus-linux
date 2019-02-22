@@ -1,0 +1,24 @@
+---
+- name: Creates directory to mount
+  file:
+    path: /opt/share
+    state: directory
+    mode: 777
+
+- name: install autofs
+  yum:
+    name: autofs
+    state: present
+
+- name: config autofs master
+  lineinfile:
+    path: /etc/auto.master
+    state: present
+    line: /opt /etc/auto.opt
+  notify: restart autofs
+
+- name: copy autofs opt map
+  copy:
+    dest: /etc/auto.opt
+    src: files/auto.opt
+  notify: restart autofs

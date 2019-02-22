@@ -10,4 +10,18 @@
     - role: add-entry-to-hosts
       ip: 10.0.10.3
       dns: client
+
+- name: Configure nfs server
+  hosts: server
+  become: True
+  gather_facts: False
+  roles:
+    - nfs-server
+
+- name: Configure nfs client
+  hosts: client
+  become: True
+  gather_facts: False
+  roles:
+    - nfs-client
 ...

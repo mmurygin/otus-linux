@@ -1,0 +1,12 @@
+---
+- name: Creates directory to share
+  file:
+    path: /opt/nfs
+    state: directory
+    mode: 0777
+- name: config export dir
+  lineinfile:
+    path: /etc/exports
+    state: present
+    line: /opt/nfs client(rw)
+  notify: restart nfs
