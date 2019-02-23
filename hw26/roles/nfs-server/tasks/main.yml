@@ -10,3 +10,15 @@
     state: present
     line: /opt/nfs client(rw)
   notify: restart nfs
+- name: start firewalld
+  systemd:
+      name: firewalld
+      enabled: yes
+      state: started
+- name: enable nfs server
+  firewalld:
+    state: enabled
+    service: nfs3
+    permanent: yes
+    immediate: yes
+
