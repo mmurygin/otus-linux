@@ -4,21 +4,49 @@
     path: /opt/nfs
     state: directory
     mode: 0777
+
 - name: config export dir
   lineinfile:
     path: /etc/exports
     state: present
     line: /opt/nfs client(rw)
   notify: restart nfs
+
 - name: start firewalld
   systemd:
       name: firewalld
       enabled: yes
       state: started
+
+- name: add eth1 to internal zone
+  firewalld:
+    zone: internal
+    interface: eth1
+    state: enabled
+    permanent: yes
+    immediate: yes
+
 - name: enable nfs server
   firewalld:
+    zone: internal
     state: enabled
     service: nfs3
+    permanent: yes
+    immediate: yes
+
+- name: enable rpc-bind
+  firewalld:
+    zone: internal
+    state: enabled
+    service: rpc-bind
+    permanent: yes
+    immediate: yes
+
+- name: enable mountd
+  firewalld:
+    zone: internal
+    state: enabled
+    service: mountd
     permanent: yes
     immediate: yes
 

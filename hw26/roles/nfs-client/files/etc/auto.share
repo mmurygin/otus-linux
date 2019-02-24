@@ -1,0 +1,1 @@
+upload   -fstype=nfs,nfsvers=3,proto=udp     server:/opt/nfs

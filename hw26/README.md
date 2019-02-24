@@ -11,3 +11,11 @@ vagrant up должен поднимать 2 виртуалки: сервер и
 - требования для NFS: NFSv3 по UDP, включенный firewall
 
 * Настроить аутентификацию через KERBEROS
+
+## Check Solution
+```bash
+vagrant up
+vagrant ssh client
+cd /var/share/upload # this will force autofs to mount this dir
+mount # view the mount dirs list
+```
