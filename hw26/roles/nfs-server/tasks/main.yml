@@ -14,9 +14,9 @@
 
 - name: start firewalld
   systemd:
-      name: firewalld
-      enabled: yes
-      state: started
+    name: firewalld
+    enabled: yes
+    state: started
 
 - name: add eth1 to internal zone
   firewalld:

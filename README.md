@@ -21,4 +21,4 @@
 - [HW21: DNS](hw21)
 - [HW22: Firewall](hw22)
 - [HW23: Nginx](hw23)
-- [HW26: NFS and Samba](hw26)
+- [HW26: NFS](hw26)

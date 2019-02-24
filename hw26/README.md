@@ -1,4 +1,4 @@
-# NSF and Samba
+# NFS
 
 ## Homework
 Vagrant stand NFS или SAMBA
@@ -19,3 +19,4 @@ vagrant ssh client
 cd /var/share/upload # this will force autofs to mount this dir
 mount # view the mount dirs list
 ```
+
