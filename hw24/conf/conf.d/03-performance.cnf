@@ -1,0 +1,16 @@
+[mysqld]
+skip-external-locking
+key-buffer-size = 384M
+max-allowed-packet = 16M
+table-open-cache = 5000
+sort-buffer-size = 64M
+join-buffer-size = 64M
+read-buffer-size = 2M
+read-rnd-buffer-size = 8M
+myisam-sort-buffer-size = 64M
+thread-cache-size = 8
+query-cache-limit = 64M
+query-cache-size = 1024M
+tmp-table-size = 1024M
+max-heap-table-size = 1024M
+#thread-concurrency = 8 # Из за этого параметра на Vagrant-овской виртуалке mysql не взлетает
