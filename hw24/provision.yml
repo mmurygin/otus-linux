@@ -11,3 +11,9 @@
       ip: 10.0.10.3
       dns: slave
 
+- name: setup master
+  hosts: master
+  become: True
+  gather_facts: False
+  roles:
+    - role: percona-server
