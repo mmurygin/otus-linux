@@ -17,3 +17,4 @@
   gather_facts: False
   roles:
     - role: percona-server
+      mysql_password: uBW94U&8^079 

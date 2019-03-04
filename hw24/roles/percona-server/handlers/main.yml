@@ -1,6 +1,0 @@
----
-- name: restart mysql
-  systemd:
-    name: mysql.service
-    state: restarted
-    enabled: yes
