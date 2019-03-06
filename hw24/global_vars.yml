@@ -1,0 +1,6 @@
+---
+mysql_password: uBW94U&8^079
+remote_dump_path: /vagrant/master.sql
+local_dump_path: /tmp/master.sql
+replication_user: repl
+replication_password: 'uBW94U&8^080'

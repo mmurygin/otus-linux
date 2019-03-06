@@ -15,18 +15,15 @@
   hosts: master
   become: True
   gather_facts: False
+  vars_files:
+    - global_vars.yml
   roles:
     - role: percona-server
-      mysql_password: uBW94U&8^079
       server_id: 1
     - role: restore-dump
-      mysql_password: uBW94U&8^079
       database_name: bet
       backup_path: /vagrant/data/bet.dmp
     - role: prepare-master
-      mysql_password: uBW94U&8^079
-      remote_dump_path: /vagrant/master.sql
-      local_dump_path: /tmp/master.sql
       ignore_tables:
         - bet.events_on_demand
         - bet.v_same_event
@@ -35,8 +32,9 @@
   hosts: slave
   become: True
   gather_facts: False
+  vars_files:
+  - global_vars.yml
   roles:
     - role: percona-server
-      mysql_password: uBW94U&8^079
       server_id: 2
       is_slave: True

@@ -1,4 +1,28 @@
 ---
+- name: check if replication user exists
+  command: >
+    mysql
+      -uroot
+      -p'{{ mysql_password }}'
+      -e 'SELECT user FROM mysql.user where user="{{ replication_user }}"'
+  register: existed_replication_user
+
+- name: create replication user
+  command: >
+    mysql
+      -uroot
+      -p'{{ mysql_password }}'
+      -e 'CREATE USER "{{ replication_user }}" IDENTIFIED BY "{{ replication_password }}"'
+  when: existed_replication_user.stdout == ""
+
+- name: priviledges to replication user
+  command: >
+    mysql
+      -uroot
+      -p'{{ mysql_password }}'
+      -e 'GRANT REPLICATION SLAVE ON *.* TO "{{ replication_user }}"@"%" IDENTIFIED BY "{{ replication_password }}";'
+  when: existed_replication_user.stdout == ""
+
 - name: save dump
   shell: |
     mysqldump > "{{ remote_dump_path }}" \
@@ -15,4 +39,11 @@
       --master-data
   args:
     creates: "{{ remote_dump_path }}"
+
+- name: fetch master backup from master server to host
+  fetch:
+    dest: "{{ local_dump_path }}"
+    src: "{{ remote_dump_path }}"
+    creates: "{{ local_dump_path }}"
+    flat: yes
 ...
