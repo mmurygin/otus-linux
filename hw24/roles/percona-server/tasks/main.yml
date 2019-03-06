@@ -10,17 +10,19 @@
   yum:
     name: Percona-Server-server-57
     state: present
+  notify: restart mysql
 
 - name: copy config files
-  copy:
-    src: files/conf.d/
+  template:
+    src: "{{ item }}"
     dest: /etc/my.cnf.d/
+  with_fileglob: templates/my.cnf.d/*
+  notify: restart mysql
 
 - name: restart mysql
   systemd:
     name: mysql.service
     state: started
-    enabled: yes
 
 - name: get current mysql password
   shell: grep 'A temporary password is generated' /var/log/mysqld.log | awk '{print $11}' | head -1

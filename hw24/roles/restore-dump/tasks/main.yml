@@ -1,0 +1,15 @@
+---
+- name: check if database exists
+  command: >
+    mysql
+      -uroot
+      -p'{{ mysql_password }}'
+      -e 'SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = "{{ database_name }}"'
+  register: existed_database
+
+- name: restore database
+  shell: |
+    mysql -uroot -p'{{ mysql_password }}' -e 'CREATE DATABASE {{ database_name }}'
+    mysql -uroot -p'{{ mysql_password }}' -D {{ database_name }} < {{ backup_path }}
+  when: existed_database.stdout == ""
+

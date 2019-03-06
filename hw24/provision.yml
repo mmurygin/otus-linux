@@ -17,4 +17,19 @@
   gather_facts: False
   roles:
     - role: percona-server
-      mysql_password: uBW94U&8^079 
+      mysql_password: uBW94U&8^079
+      server_id: 1
+    - role: restore-dump
+      mysql_password: uBW94U&8^079
+      database_name: bet
+      backup_path: /vagrant/data/bet.dmp
+
+- name: setup slave
+  hosts: slave
+  become: True
+  gather_facts: False
+  roles:
+    - role: percona-server
+      mysql_password: uBW94U&8^080
+      server_id: 2
+      is_slave: True
