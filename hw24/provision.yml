@@ -38,3 +38,4 @@
     - role: percona-server
       server_id: 2
       is_slave: True
+    - role: prepare-slave
