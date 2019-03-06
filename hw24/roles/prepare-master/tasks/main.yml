@@ -1,0 +1,18 @@
+---
+- name: save dump
+  shell: |
+    mysqldump > "{{ remote_dump_path }}" \
+      -uroot \
+      -p'{{ mysql_password }}' \
+      {% if ignore_tables is defined %}
+      {% for ignore_table in ignore_tables %}
+      --ignore-table={{ ignore_table }} \
+      {% endfor %}
+      {% endif %}
+      --all-databases \
+      --triggers \
+      --routines \
+      --master-data
+  args:
+    creates: "{{ remote_dump_path }}"
+...

@@ -12,4 +12,4 @@
     mysql -uroot -p'{{ mysql_password }}' -e 'CREATE DATABASE {{ database_name }}'
     mysql -uroot -p'{{ mysql_password }}' -D {{ database_name }} < {{ backup_path }}
   when: existed_database.stdout == ""
-
+...
