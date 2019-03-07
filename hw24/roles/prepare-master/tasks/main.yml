@@ -36,9 +36,7 @@
       --all-databases \
       --triggers \
       --routines \
-      --master-data \
-      --set-gtid-purged=OFF
-    sed -i '/^SET @@GLOBAL.GTID_PURGED=/d' {{ remote_dump_path }}
+      --master-data
   args:
     creates: "{{ remote_dump_path }}"
 

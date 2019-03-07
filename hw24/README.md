@@ -21,3 +21,36 @@
 * пример в логе изменения строки и появления строки на реплике
 
 
+## Solution
+1. Setup environment
+    ```bash
+    vagrant up
+    ```
+
+1. Restore master backup and start slave
+    ```bash
+    vagrant ssh slave
+    mysql -uroot -p'uBW94U&8^079'
+
+    source /vagrant/master.sql
+    CHANGE MASTER TO \
+        MASTER_HOST="master", \
+        MASTER_USER="repl", \
+        MASTER_PASSWORD="uBW94U&8^080", \
+        MASTER_AUTO_POSITION=1;
+
+    START SLAVE;
+
+    SHOW SlAVE STATUS\G;
+    ```
+
+## Check Result
+```bash
+vagrant ssh master
+mysql -uroot -p'uBW94U&8^079' -D 'bet' -e 'INSERT INTO bookmaker (id,bookmaker_name) VALUES(1,"1xbet");'
+exit
+
+vagrant ssh slave
+mysql -uroot -p'uBW94U&8^079' -D 'bet' -e 'SELECT * FROM bookmaker;'
+exit
+```
