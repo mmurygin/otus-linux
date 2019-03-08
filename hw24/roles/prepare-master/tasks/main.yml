@@ -28,8 +28,8 @@
     mysqldump > "{{ remote_dump_path }}" \
       -uroot \
       -p'{{ mysql_password }}' \
-      {% if ignore_tables is defined %}
-      {% for ignore_table in ignore_tables %}
+      {% if replication_ignore_tables is defined %}
+      {% for ignore_table in replication_ignore_tables %}
       --ignore-table={{ ignore_table }} \
       {% endfor %}
       {% endif %}

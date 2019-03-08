@@ -4,3 +4,6 @@ remote_dump_path: /vagrant/master.sql
 local_dump_path: /tmp/master.sql
 replication_user: repl
 replication_password: 'uBW94U&8^080'
+replication_ignore_tables:
+  - bet.events_on_demand
+  - bet.v_same_event

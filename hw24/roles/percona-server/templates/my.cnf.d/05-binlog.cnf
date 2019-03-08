@@ -9,8 +9,9 @@ log-slave-updates = On
 gtid-mode = On
 enforce-gtid-consistency = On
 
-# Эта часть только для слэйва - исключаем репликацию таблиц
-{% if 'is_slave' %}
-replicate-ignore-table=bet.events_on_demand
-replicate-ignore-table=bet.v_same_event
+{% if is_slave is defined and is_slave and replication_ignore_tables is defined %}
+{% for ignore_table in replication_ignore_tables %}
+replicate-ignore-table={{ ignore_table }}
+replicate-ignore-table={{ ignore_table }}
+{% endfor %}
 {% endif %}

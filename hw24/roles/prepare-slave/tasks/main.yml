@@ -4,29 +4,31 @@
     src: "{{ local_dump_path }}"
     dest: "{{ remote_dump_path }}"
 
-# - name: check if replication user exists
-#   command: >
-#     mysql
-#       -uroot
-#       -p'{{ mysql_password }}'
-#       -e 'SELECT user FROM mysql.user where user="{{ replication_user }}"'
-#   register: existed_replication_user
+- name: check if replication user exists
+  command: >
+    mysql
+      -uroot
+      -p'{{ mysql_password }}'
+      -e 'SELECT user FROM mysql.user where user="{{ replication_user }}"'
+  register: existed_replication_user
 
-# - name: restore slave database
-#   shell: mysql -uroot -p'{{ mysql_password }}' < '{{ remote_dump_path }}'
-#   when: existed_replication_user.stdout == ""
+- name: restore slave database
+  shell: |
+    mysql -uroot -p'{{ mysql_password }}' -e 'reset master;'
+    mysql -uroot -p'{{ mysql_password }}' < '{{ remote_dump_path }}'
+  when: existed_replication_user.stdout == ""
 
-# - name: setup slave
-#   shell: |
-#     mysql \
-#       -uroot \
-#       -p'{{ mysql_password }}' \
-#       -e 'CHANGE MASTER TO \
-#         MASTER_HOST="master", \
-#         MASTER_USER="{{ replication_user }}", \
-#         MASTER_PASSWORD="{{ replication_password }}", \
-#         MASTER_AUTO_POSITION=1;'
-#     mysql \
-#       -uroot \
-#       -p'{{ mysql_password }}' \
-#       -e 'START SLAVE;'
+- name: setup slave
+  shell: |
+    mysql \
+      -uroot \
+      -p'{{ mysql_password }}' \
+      -e 'CHANGE MASTER TO \
+        MASTER_HOST="master", \
+        MASTER_USER="{{ replication_user }}", \
+        MASTER_PASSWORD="{{ replication_password }}", \
+        MASTER_AUTO_POSITION=1;'
+    mysql \
+      -uroot \
+      -p'{{ mysql_password }}' \
+      -e 'START SLAVE;'

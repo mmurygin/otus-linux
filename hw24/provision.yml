@@ -24,9 +24,6 @@
       database_name: bet
       backup_path: /vagrant/data/bet.dmp
     - role: prepare-master
-      ignore_tables:
-        - bet.events_on_demand
-        - bet.v_same_event
 
 - name: setup slave
   hosts: slave
