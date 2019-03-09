@@ -10,6 +10,8 @@ gtid-mode = On
 enforce-gtid-consistency = On
 
 {% if is_slave is defined and is_slave and replication_ignore_tables is defined %}
+read-only = ON
+super-read-only = ON
 {% for ignore_table in replication_ignore_tables %}
 replicate-ignore-table={{ ignore_table }}
 replicate-ignore-table={{ ignore_table }}
