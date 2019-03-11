@@ -23,4 +23,5 @@
 - [HW22: Firewall](hw22)
 - [HW23: Nginx](hw23)
 - [HW24: MySQL Replication](hw24)
+- [HW25: MySQL Clusters](hw25)
 - [HW26: NFS](hw26)

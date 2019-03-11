@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  node1:
+    image: mysql/mysql-server
+    env_file:
+      - ./common.env
+    networks:
+      - mysql-cluster
+
+  node2:
+    image: mysql/mysql-server
+    env_file:
+      - ./common.env
+    networks:
+      - mysql-cluster
+
+  node3:
+    image: mysql/mysql-server
+    env_file:
+      - ./common.env
+    networks:
+      - mysql-cluster
+
+#  router:
+#    image: mysql/mysql-router
+#    networks:
+#      - mysql-cluster
+
+networks:
+  mysql-cluster:
