@@ -1,4 +1,4 @@
-FROM mysql/mysql-server
+FROM mysql/mysql-server:8.0.15
 
 ARG SERVER_ID
 

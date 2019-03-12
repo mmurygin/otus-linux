@@ -1,10 +1,12 @@
 #!/bin/bash
 
-docker-compose up -d
+docker-compose up --build  -d
 
-echo "Waiting for database servers setup..."
-sleep 30
+echo "Waiting for database servers setup (60s)..."
+sleep 60
 
-./server/provision.sh node1
-./server/provision.sh node2
-./server/provision.sh node3
+./nodes/provision.sh node1
+./nodes/provision.sh node2
+./nodes/provision.sh node3
+
+./init-cluster.sh

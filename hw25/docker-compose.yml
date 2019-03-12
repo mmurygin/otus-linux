@@ -3,7 +3,7 @@ version: "3"
 services:
   node1:
     build:
-      context: server
+      context: nodes
       args:
         SERVER_ID: 10
     volumes:
@@ -15,7 +15,7 @@ services:
 
   node2:
     build:
-      context: server
+      context: nodes
       args:
         SERVER_ID: 20
     volumes:
@@ -27,7 +27,7 @@ services:
 
   node3:
     build:
-      context: server
+      context: nodes
       args:
         SERVER_ID: 30
     image: mysql/mysql-server
