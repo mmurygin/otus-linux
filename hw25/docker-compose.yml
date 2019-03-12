@@ -2,21 +2,37 @@ version: "3"
 
 services:
   node1:
-    image: mysql/mysql-server
+    build:
+      context: server
+      args:
+        SERVER_ID: 10
+    volumes:
+      - node1_db:/var/lib/mysql
     env_file:
       - ./common.env
     networks:
       - mysql-cluster
 
   node2:
-    image: mysql/mysql-server
+    build:
+      context: server
+      args:
+        SERVER_ID: 20
+    volumes:
+      - node2_db:/var/lib/mysql
     env_file:
       - ./common.env
     networks:
       - mysql-cluster
 
   node3:
+    build:
+      context: server
+      args:
+        SERVER_ID: 30
     image: mysql/mysql-server
+    volumes:
+      - node3_db:/var/lib/mysql
     env_file:
       - ./common.env
     networks:
@@ -29,3 +45,8 @@ services:
 
 networks:
   mysql-cluster:
+
+volumes:
+  node1_db:
+  node2_db:
+  node3_db:
