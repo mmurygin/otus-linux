@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./common.env
+source env/nodes.env
 
 node=$1
 

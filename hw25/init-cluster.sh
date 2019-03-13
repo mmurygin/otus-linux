@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source common.env
+source env/nodes.env
 
 docker-compose exec node1 \
     mysqlsh "$CLUSTER_ADMIN_LOGIN"@node1 -p"$CLUSTER_ADMIN_PASSWORD" -- \

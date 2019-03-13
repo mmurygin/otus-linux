@@ -9,7 +9,7 @@ services:
     volumes:
       - node1_db:/var/lib/mysql
     env_file:
-      - ./common.env
+      - ./env/nodes.env
     networks:
       - mysql-cluster
 
@@ -21,7 +21,7 @@ services:
     volumes:
       - node2_db:/var/lib/mysql
     env_file:
-      - ./common.env
+      - ./env/nodes.env
     networks:
       - mysql-cluster
 
@@ -34,14 +34,19 @@ services:
     volumes:
       - node3_db:/var/lib/mysql
     env_file:
-      - ./common.env
+      - ./env/nodes.env
     networks:
       - mysql-cluster
 
-#  router:
-#    image: mysql/mysql-router
-#    networks:
-#      - mysql-cluster
+  router:
+    image: mysql/mysql-router
+    ports:
+      - 6446:6446
+    env_file:
+      - ./env/router.env
+    networks:
+     - mysql-cluster
+
 
 networks:
   mysql-cluster:
