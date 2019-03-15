@@ -25,3 +25,4 @@
 - [HW24: MySQL Replication](hw24)
 - [HW25: MySQL Clusters](hw25)
 - [HW26: NFS](hw26)
+- [HW28: PostgreSQL replication and backup](hw28)
