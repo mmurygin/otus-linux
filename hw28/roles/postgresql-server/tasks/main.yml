@@ -1,0 +1,29 @@
+---
+- name: check if postgresql repo is installed
+  command: rpm -qa pgdg-centos11
+  args:
+    warn: False
+  register: postgresql_repo_installed
+
+- name: install postgresql repo
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-centos11-11-2.noarch.rpm
+    state: present
+  when: postgresql_repo_installed.stdout == ""
+
+- name: install postgresql server
+  yum:
+    name: postgresql11-server
+    state: present
+  notify: restart postgresql
+
+- name: install postgresql client
+  yum:
+    name: postgresql11
+    state: present
+
+- name: init database
+  command: /usr/pgsql-11/bin/postgresql-11-setup initdb
+  args:
+    creates: /var/lib/pgsql
+
