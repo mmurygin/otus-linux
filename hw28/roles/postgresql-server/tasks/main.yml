@@ -17,13 +17,8 @@
     state: present
   notify: restart postgresql
 
-- name: install postgresql client
-  yum:
-    name: postgresql11
-    state: present
-
 - name: init database
   command: /usr/pgsql-11/bin/postgresql-11-setup initdb
   args:
-    creates: /var/lib/pgsql
+    creates: /var/lib/pgsql/11/data/postgresql.conf
 
