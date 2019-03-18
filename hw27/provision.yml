@@ -1,0 +1,7 @@
+---
+- name: Setup server
+  become: True
+  hosts: all
+  gather_facts: False
+  roles:
+    - dovecot

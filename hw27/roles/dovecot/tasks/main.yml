@@ -1,0 +1,7 @@
+---
+- name: install dovecot server
+  yum: 
+    name: dovecot
+    state: present
+  notify: restart dovecot
+...
