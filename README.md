@@ -27,3 +27,4 @@
 - [HW26: NFS](hw26)
 - [HW27: SMTP, IMAP, POP3](hw27)
 - [HW28: PostgreSQL replication and backup](hw28)
+- [Project: High Available Cluster](project)
