@@ -17,8 +17,8 @@
   gather_facts: False
   roles:
     - role: postfix-server
-      allowed_networks: 10.0.10.0/24
-      listen_ip: 10.0.10.2
+      allowed_networks: "10.0.10.0/24"
+      listen_ip: "10.0.10.2, 10.0.2.15"
     - role: dovecot
       user: vagrant
       password: password

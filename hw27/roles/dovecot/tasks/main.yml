@@ -58,8 +58,8 @@
     state: present
   notify: restart dovecot
 
-- name: allow dovecot to create lock files
+- name: allow dovecot to create lock files (fixes ChgrpNoPerm error)
   file:
-    path: /var/mail
-    mode: 01777
+    path: /var/mail/{{user}}
+    mode: 0600
 ...
