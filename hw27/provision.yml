@@ -1,0 +1,32 @@
+---
+- name: Add records to /etc/hosts
+  hosts: all
+  become: True
+  gather_facts: False
+  roles:
+    - role: add-entry-to-hosts
+      ip: 10.0.10.2
+      dns: server.home.local
+    - role: add-entry-to-hosts
+      ip: 10.0.10.3
+      dns: client.home.local
+
+- name: Setup server
+  become: True
+  hosts: server
+  gather_facts: False
+  roles:
+    - role: postfix-server
+      allowed_networks: 10.0.10.0/24
+      listen_ip: 10.0.10.2
+    - role: dovecot
+      user: vagrant
+      password: password
+
+- name: Setup postfix client
+  become: True
+  hosts: client
+  gather_facts: False
+  roles:
+    - role: postfix-client
+      relay_host: server.home.local

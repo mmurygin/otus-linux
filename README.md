@@ -25,4 +25,6 @@
 - [HW24: MySQL Replication](hw24)
 - [HW25: MySQL Clusters](hw25)
 - [HW26: NFS](hw26)
+- [HW27: SMTP, IMAP, POP3](hw27)
 - [HW28: PostgreSQL replication and backup](hw28)
+- [Project: High Available Cluster](project)

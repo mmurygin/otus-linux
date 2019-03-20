@@ -1,0 +1,65 @@
+---
+- name: install dovecot server
+  yum:
+    name: dovecot
+    state: present
+  notify: restart dovecot
+
+- name: generate password for {{ user }}
+  shell: echo "$USER:{PLAIN}password:$(id -):$(id -g)::$HOME" >> /home/{{user}}/users
+  become: '{{ user }}'
+  args:
+    creates: /home/{{ user }}/users
+  notify: restart dovecot
+
+- name: move passowrd file to dovecot configs
+  shell: cp /home/{{user}}/users /etc/dovecot/ && restorecon -v /etc/dovecot/users
+  args:
+    creates: /etc/dovecot/users
+  notify: restart dovecot
+
+- name: allow password authentication
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-auth.conf
+    regexp: '^!include auth-passwdfile.conf.ext'
+    line: '!include auth-passwdfile.conf.ext'
+    state: present
+  notify: restart dovecot
+
+- name: allow auth without ssl
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-auth.conf
+    regexp: '^disable_plaintext_auth ='
+    line: 'disable_plaintext_auth = no'
+    state: present
+  notify: restart dovecot
+
+- name: disable ssl
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-ssl.conf
+    regexp: '^ssl ='
+    line: 'ssl = no'
+    state: present
+  notify: restart dovecot
+
+- name: set mail location
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-mail.conf
+    regexp: '^mail_location ='
+    line: 'mail_location = mbox:~/mail:INBOX=/var/mail/%u'
+    state: present
+  notify: restart dovecot
+
+- name: allow dovecot to read users emails dir
+  lineinfile:
+    path: /etc/dovecot/conf.d/10-mail.conf
+    regexp: '^mail_privileged_group ='
+    line: 'mail_privileged_group = mail'
+    state: present
+  notify: restart dovecot
+
+- name: allow dovecot to create lock files
+  file:
+    path: /var/mail
+    mode: 01777
+...

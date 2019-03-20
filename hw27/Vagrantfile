@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "centos/7"
+  config.vm.box_check_update = false
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provision.yml"
+    # ansible.verbose = "vvv"
+  end
+
+  config.vm.define "server" do |server|
+    server.vm.hostname = "server.home.local"
+    server.vm.network "private_network", ip: "10.0.10.2"
+    server.vm.network "forwarded_port", guest: 25, host: 8025
+    server.vm.network "forwarded_port", guest: 143, host: 8143
+  end
+
+  config.vm.define "client" do |client|
+    client.vm.hostname = "client.home.local"
+    client.vm.network "private_network", ip: "10.0.10.3"
+  end
+end
