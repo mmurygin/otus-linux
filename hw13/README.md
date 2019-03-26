@@ -16,4 +16,3 @@
 ```bash
 vagrant up
 ```
-
