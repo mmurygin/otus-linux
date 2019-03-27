@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "chef/centos-7.1"
+  config.vm.box = "centos/7"
   config.vm.box_check_update = true
   #config.vm.network "forwarded_port", guest: 80, host: 8080
   #config.vm.synced_folder "../data", "/vagrant_data"
@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
 psql bacula -c "alter user bacula with password '$PG_BACULA_PASSWORD'"
 EOF
 
-          echo "localhost:5432:bacula:bacula:"$PG_BACULA_PASSWORD > /var/spool/bacula/.pgpass 
+          echo "localhost:5432:bacula:bacula:"$PG_BACULA_PASSWORD > /var/spool/bacula/.pgpass
         chown bacula:bacula /var/spool/bacula/.pgpass
         chmod 600 /var/spool/bacula/.pgpass
         systemctl restart postgresql
@@ -48,8 +48,8 @@ EOF
         chmod 755 /etc/bacula
         chmod 640 /etc/bacula/*
         chgrp bacula /etc/bacula/bacula-dir.conf /etc/bacula/query.sql
-        #  Setting rights - http://www.backupcentral.com/phpBB2/two-way-mirrors-of-external-mailing-lists-3/bacula-25/permission-problem-on-centos-6-5-and-bacula-7-125732/ 
-      
+        #  Setting rights - http://www.backupcentral.com/phpBB2/two-way-mirrors-of-external-mailing-lists-3/bacula-25/permission-problem-on-centos-6-5-and-bacula-7-125732/
+
         #  Set Bacula Component Passwords
         #  https://www.digitalocean.com/community/tutorials/how-to-install-bacula-server-on-centos-7
         sed -i "s/@@FD_PASSWORD@@/N2I3NzNmYTg3YzMwOWMzN2NhOTljNmMzY/g" /etc/bacula/bacula-dir.conf
