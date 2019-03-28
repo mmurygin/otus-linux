@@ -16,3 +16,12 @@
 ```bash
 vagrant up
 ```
+
+## Results
+* `list jobs`
+
+![List jobs](img/list-jobs.png)
+
+* The part of `list files jobid=1`
+
+![List files](img/job-files.png)
