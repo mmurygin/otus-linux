@@ -3,35 +3,41 @@
   hosts: all
   become: True
   gather_facts: False
+  vars_files:
+    - global_vars.yml
   roles:
     - role: add-entry-to-hosts
-      ip: 10.0.10.2
-      dns: master.local
+      ip: '{{ master_ip }}'
+      dns: '{{ master_hostname }}'
     - role: add-entry-to-hosts
-      ip: 10.0.10.3
-      dns: slave.local
+      ip: '{{ slave_ip }}'
+      dns: '{{ slave_hostname }}'
     - role: add-entry-to-hosts
-      ip: 10.0.10.4
-      dns: backup.local
+      ip: '{{ backup_ip }}'
+      dns: '{{ backup_hostname }}'
 
 - name: setup master
   hosts: master
   become: True
   gather_facts: False
+  vars_files:
+    - global_vars.yml
   roles:
     - postgresql-server
 
-- name: setup slave
-  hosts: slave
-  become: True
-  gather_facts: False
-  roles:
-    - postgresql-server
+# - name: setup slave
+#   hosts: slave
+#   become: True
+#   gather_facts: False
+#   roles:
+#     - postgresql-server
 
 - name: setup backup server
   hosts: backup
   become: True
   gather_facts: False
+  vars_files:
+    - global_vars.yml
   roles:
     - epel
     - barman

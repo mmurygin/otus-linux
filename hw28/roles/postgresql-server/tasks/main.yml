@@ -22,3 +22,41 @@
   args:
     creates: /var/lib/pgsql/11/data/postgresql.conf
 
+- name: copy config files
+  template:
+    src: '{{ item }}'
+    dest: /var/lib/pgsql/11/data
+    mode: 0600
+    owner: postgres
+    group: postgres
+  vars:
+    listen_address: '{{ master_ip }}'
+  with_fileglob: templates/*
+  notify: restart postgresql
+
+- name: start postgresql server
+  systemd:
+    name: postgresql-11.service
+    state: started
+
+- name: check barman user
+  become_user: postgres
+  command: psql postgres -tAc "SELECT 1 from pg_roles where rolname='{{ barman_username }}'"
+  register: barman_user_exists
+
+- name: create barman user
+  become_user: postgres
+  command: psql postgres -c "CREATE USER {{ barman_username }} WITH SUPERUSER PASSWORD '{{ barman_password }}'"
+  when: barman_user_exists.stdout != "1"
+
+
+- name: check streaming user
+  become_user: postgres
+  command: psql postgres -tAc "SELECT 1 from pg_roles where rolname='{{ streaming_username }}'"
+  register: streaming_user_exists
+
+- name: create streaming user
+  become_user: postgres
+  command: psql postgres -c "CREATE USER {{ streaming_username }} WITH SUPERUSER PASSWORD '{{ streaming_password }}'"
+  when: streaming_user_exists.stdout != "1"
+

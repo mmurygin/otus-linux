@@ -14,3 +14,15 @@
   yum:
     name: barman
     state: present
+
+- name: store connection info
+  template:
+    src: templates/.pgpass
+    dest: /var/lib/barman/.pgpass
+    mode: 0600
+    owner: barman
+    group: barman
+  vars:
+    hostname: '{{ master_hostname }}'
+    username: '{{ barman_username }}'
+    password: '{{ barman_password }}'

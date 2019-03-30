@@ -1,2 +1,16 @@
 ---
+# network information
+master_hostname: master.local
+master_ip: 10.0.10.2
+slave_hostname: slave.local
+slave_ip: 10.0.10.3
+backup_hostname: backup.local
+backup_ip: 10.0.10.4
+allowed_network: 10.0.10.0/24
+
+# postgres users
+barman_username: barman
+barman_password: password
+streaming_username: streaming_barman
+streaming_password: password
 ...
