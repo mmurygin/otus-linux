@@ -1,27 +1,4 @@
 ---
-- name: check if postgresql repo is installed
-  command: rpm -qa pgdg-centos11
-  args:
-    warn: False
-  register: postgresql_repo_installed
-
-- name: install postgresql repo
-  yum:
-    name: https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-centos11-11-2.noarch.rpm
-    state: present
-  when: postgresql_repo_installed.stdout == ""
-
-- name: install postgresql server
-  yum:
-    name: postgresql11-server
-    state: present
-  notify: restart postgresql
-
-- name: init database
-  command: /usr/pgsql-11/bin/postgresql-11-setup initdb
-  args:
-    creates: /var/lib/pgsql/11/data/postgresql.conf
-
 - name: copy config files
   template:
     src: '{{ item }}'
@@ -33,11 +10,6 @@
     listen_address: '{{ master_ip }}'
   with_fileglob: templates/*
   notify: restart postgresql
-
-- name: start postgresql server
-  systemd:
-    name: postgresql-11.service
-    state: started
 
 - name: check barman user
   become_user: postgres
@@ -57,6 +29,6 @@
 
 - name: create streaming user
   become_user: postgres
-  command: psql postgres -c "CREATE USER {{ streaming_username }} WITH SUPERUSER PASSWORD '{{ streaming_password }}'"
+  command: psql postgres -c "CREATE USER {{ streaming_username }} WITH REPLICATION PASSWORD '{{ streaming_password }}'"
   when: streaming_user_exists.stdout != "1"
 

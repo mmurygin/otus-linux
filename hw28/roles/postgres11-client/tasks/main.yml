@@ -1,0 +1,6 @@
+---
+- name: install postgresql client
+  yum:
+    name: postgresql11
+    state: present
+

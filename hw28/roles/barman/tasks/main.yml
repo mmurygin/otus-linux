@@ -15,14 +15,16 @@
     name: barman
     state: present
 
-- name: store connection info
+- name: store connection info for barman
   template:
     src: templates/.pgpass
     dest: /var/lib/barman/.pgpass
     mode: 0600
     owner: barman
     group: barman
-  vars:
-    hostname: '{{ master_hostname }}'
-    username: '{{ barman_username }}'
-    password: '{{ barman_password }}'
+
+- name: copy backup configuration
+  template:
+    src: templates/pg.conf
+    dest: /etc/barman.d/master.local.conf
+    mode: 0644

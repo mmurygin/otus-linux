@@ -23,14 +23,17 @@
   vars_files:
     - global_vars.yml
   roles:
-    - postgresql-server
+    - postgres11-repo
+    - postgres11-server
+    - postgres11-master
 
-# - name: setup slave
-#   hosts: slave
-#   become: True
-#   gather_facts: False
-#   roles:
-#     - postgresql-server
+- name: setup slave
+  hosts: slave
+  become: True
+  gather_facts: False
+  roles:
+    - postgres11-repo
+    - postgres11-server
 
 - name: setup backup server
   hosts: backup
@@ -40,4 +43,6 @@
     - global_vars.yml
   roles:
     - epel
+    - postgres11-repo
+    - postgres11-client
     - barman
