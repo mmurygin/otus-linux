@@ -1,4 +1,4 @@
-# MySQL Replication
+# PostgreSQL Replication
 
 ## Homework
 Настроить репликацию

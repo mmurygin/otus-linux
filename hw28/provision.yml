@@ -6,14 +6,32 @@
   roles:
     - role: add-entry-to-hosts
       ip: 10.0.10.2
-      dns: master
+      dns: master.local
     - role: add-entry-to-hosts
       ip: 10.0.10.3
-      dns: slave
+      dns: slave.local
+    - role: add-entry-to-hosts
+      ip: 10.0.10.4
+      dns: backup.local
 
 - name: setup master
   hosts: master
   become: True
   gather_facts: False
   roles:
-    - role: postgresql-server
+    - postgresql-server
+
+- name: setup slave
+  hosts: slave
+  become: True
+  gather_facts: False
+  roles:
+    - postgresql-server
+
+- name: setup backup server
+  hosts: backup
+  become: True
+  gather_facts: False
+  roles:
+    - epel
+    - barman
