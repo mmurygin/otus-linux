@@ -3,7 +3,6 @@
   yum:
     name: postgresql11-server
     state: present
-  notify: restart postgresql
 
 - name: init database
   command: /usr/pgsql-11/bin/postgresql-11-setup initdb
