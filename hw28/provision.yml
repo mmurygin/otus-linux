@@ -39,9 +39,7 @@
 - name: setup backup server
   hosts: backup
   become: True
-  gather_facts: True
-  environment:
-    PATH: "{{ ansible_env.PATH }}:/usr/pgsql-11/bin/"
+  gather_facts: False
   vars_files:
     - global_vars.yml
   roles:

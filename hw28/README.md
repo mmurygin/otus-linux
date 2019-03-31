@@ -8,4 +8,17 @@
 Для сдачи присылаем postgresql.conf, pg_hba.conf и recovery.conf
 А так же конфиг barman, либо скрипт резервного копирования
 
+## Getting Started
+1. Setup environment
+    ```bash
+    vagrant up
+    ```
 
+1. Create test database
+    ```bash
+    vagrant ssh master
+    sudo su postgres
+    psql
+    CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR (255) UNIQUE NOT NULL);
+    INSERT INTO users (name) values ('john');
+    ```

@@ -6,21 +6,28 @@
 
 - name: store connection info for barman
   template:
-    src: templates/.pgpass
+    src: templates/var/lib/barman/.pgpass
     dest: /var/lib/barman/.pgpass
     mode: 0600
     owner: barman
     group: barman
 
-- name: copy backup configuration
+- name: set barman configuration
+  copy:
+    src: files/etc/barman.conf
+    dest: /etc/barman.conf
+    mode: 0644
+
+- name: set backup configuration
   template:
-    src: templates/barman.conf
+    src: templates/etc/barman.d/pg.conf
     dest: /etc/barman.d/master.local.conf
     mode: 0644
 
 - name: create replication slot
-  shell: |
-    barman receive-wall --create-slot {{ master_hostname }}
-    touch /var/lib/barman/slot-created
+  shell: >
+    barman receive-wal --create-slot {{ master_hostname }} &&
+    barman switch-wal --force --archive {{ master_hostname }} &&
+    touch /var/log/barman/slot-created
   args:
-    creates: /var/lib/barman/slot-created
+    creates: /var/log/barman/slot-created
