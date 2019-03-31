@@ -14,6 +14,17 @@
     vagrant up
     ```
 
+## Check solution
+1. Check streaming
+    ```bash
+    vagrant ssh backup -c 'sudo barman switch-wal --force --archive master.local'
+    ```
+
+1. Check barman configs
+    ```bash
+    vagrant ssh backup -c 'sudo barman check master.local'
+    ```
+
 1. Create test database
     ```bash
     vagrant ssh master

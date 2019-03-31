@@ -1,0 +1,9 @@
+---
+- name: copy slave configuration file
+  template:
+    src: templates/recovery.conf
+    dest: /var/lib/pgsql/11/data/recovery.conf
+    mode: 0600
+    owner: postgres
+    group: postgres
+  notify: restart postgresql

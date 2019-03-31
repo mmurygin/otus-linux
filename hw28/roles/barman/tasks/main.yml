@@ -27,7 +27,6 @@
 - name: create replication slot
   shell: >
     barman receive-wal --create-slot {{ master_hostname }} &&
-    barman switch-wal --force --archive {{ master_hostname }} &&
     touch /var/log/barman/slot-created
   args:
     creates: /var/log/barman/slot-created

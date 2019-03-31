@@ -32,9 +32,12 @@
   hosts: slave
   become: True
   gather_facts: False
+  vars_files:
+    - global_vars.yml
   roles:
     - postgres11-repo
     - postgres11-server
+    - postgres11-slave
 
 - name: setup backup server
   hosts: backup
