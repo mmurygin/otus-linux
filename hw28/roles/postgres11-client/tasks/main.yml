@@ -3,4 +3,3 @@
   yum:
     name: postgresql11
     state: present
-

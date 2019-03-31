@@ -11,6 +11,11 @@
   with_fileglob: templates/*
   notify: restart postgresql
 
+- name: install barman cli
+  yum:
+    name: barman-cli
+    state: present
+
 - name: check barman user
   become_user: postgres
   command: psql postgres -tAc "SELECT 1 from pg_roles where rolname='{{ barman_username }}'"
@@ -21,7 +26,6 @@
   command: psql postgres -c "CREATE USER {{ barman_username }} WITH SUPERUSER PASSWORD '{{ barman_password }}'"
   when: barman_user_exists.stdout != "1"
 
-
 - name: check streaming user
   become_user: postgres
   command: psql postgres -tAc "SELECT 1 from pg_roles where rolname='{{ streaming_username }}'"
@@ -31,4 +35,3 @@
   become_user: postgres
   command: psql postgres -c "CREATE USER {{ streaming_username }} WITH REPLICATION PASSWORD '{{ streaming_password }}'"
   when: streaming_user_exists.stdout != "1"
-

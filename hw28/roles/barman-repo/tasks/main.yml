@@ -1,0 +1,12 @@
+---
+- name: download barman repo file
+  get_url:
+    url: https://dl.2ndquadrant.com/default/release/get/11/rpm
+    dest: /tmp/install-barman-repo.sh
+    mode: 0550
+
+- name: setup barman official repo
+  command: /tmp/install-barman-repo.sh
+  args:
+    creates: /etc/yum.repos.d/2ndquadrant-dl-default-release-pg11.repo
+
