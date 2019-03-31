@@ -30,6 +30,8 @@
     vagrant ssh master
     sudo su postgres
     psql
+    CREATE DATABASE "test";
+    \c test
     CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR (255) UNIQUE NOT NULL);
     INSERT INTO users (name) values ('john');
     ```
