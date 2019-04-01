@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "ipaserver" do |ipaserver|
-    ipaserver.vm.hostname = "ipaserver"
+    ipaserver.vm.hostname = "ipaserver.home.local"
     ipaserver.vm.network "private_network", ip: "10.0.10.2"
 
     ipaserver.vm.provider "virtualbox" do |vb|
@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "client" do |client|
-    client.vm.hostname = "client"
+    client.vm.hostname = "client.home.local"
     client.vm.network "private_network", ip: "10.0.10.3"
   end
 end
