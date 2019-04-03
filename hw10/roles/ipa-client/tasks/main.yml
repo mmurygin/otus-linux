@@ -1,8 +1,7 @@
 ---
 - name: setup packages for ipa client
   yum:
-    name:
-      - ipa-client
+    name: ipa-client
     state: present
 
 - name: setup ipa client

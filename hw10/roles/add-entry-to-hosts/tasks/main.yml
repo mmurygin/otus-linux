@@ -1,6 +1,0 @@
----
-- name: add "{{ ip }} {{ dns }}" to hosts
-  lineinfile:
-    path: /etc/hosts
-    state: present
-    line: '{{ ip }} {{ dns }}'

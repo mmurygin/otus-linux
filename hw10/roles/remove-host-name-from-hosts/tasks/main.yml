@@ -1,0 +1,6 @@
+---
+- name: remove record {{ ansible_facts['nodename'] }} from /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    regexp: "{{ ansible_facts['nodename'] }}"
+    state: absent

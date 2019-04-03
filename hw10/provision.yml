@@ -1,36 +1,25 @@
 ---
-- name: Add records to /etc/hosts
-  hosts: all
-  become: True
-  gather_facts: False
-  roles:
-    - role: add-entry-to-hosts
-      ip: 10.0.10.2
-      dns: ipaserver.home.local
-    - role: add-entry-to-hosts
-      ip: 10.0.10.3
-      dns: client.home.local
-
 - name: Configure ipa server
   hosts: ipaserver
   become: True
-  gather_facts: False
+  gather_facts: True
   roles:
+    - remove-host-name-from-hosts
     - role: ipa-server
       ipa_realm: HOME.LOCAL
       ipa_domain: home.local
       ipa_server_ip: 10.0.10.2
       hostname: ipaserver.home.local
 
-- name: Configure ipa client
-  hosts: client
-  become: True
-  gather_facts: False
-  roles:
-    - role: ipa-client
-      ipa_realm: HOME.LOCAL
-      ipa_domain: home.local
-      ipa_server_name: ipaserver.home.local
-      ipa_server_ip: 10.0.10.2
-      hostname: client.home.local
+ - name: Configure ipa client
+   hosts: client
+   become: True
+   gather_facts: False
+   roles:
+     - role: ipa-client
+       ipa_realm: HOME.LOCAL
+       ipa_domain: home.local
+       ipa_server_name: ipaserver.home.local
+       ipa_server_ip: 10.0.10.2
+       hostname: client.home.local
 ...
