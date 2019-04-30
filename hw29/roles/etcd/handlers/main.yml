@@ -1,0 +1,6 @@
+---
+- name: restart etcd
+  systemd:
+    name: etcd.service
+    state: restarted
+    enabled: yes

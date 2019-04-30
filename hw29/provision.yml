@@ -5,23 +5,22 @@
   gather_facts: False
   vars_files:
     - global_vars.yml
-  roles:
-    - role: add-entry-to-hosts
-      ip: '{{ node1_ip }}'
-      dns: '{{ node1_hostname }}'
-    - role: add-entry-to-hosts
-      ip: '{{ node2_ip }}'
-      dns: '{{ node2_hostname }}'
-    - role: add-entry-to-hosts
-      ip: '{{ node3_ip }}'
-      dns: '{{ node3_hostname }}'
+  tasks:
+    - name: setup dns resolution
+      include_role:
+        name: add-entry-to-hosts
+      vars:
+        ip: '{{ item.ip }}'
+        dns: '{{ item.hostname }}'
+      loop: '{{ nodes }}'
 
 - name: setup nodes
   hosts: all
   become: True
-  gather_facts: False
+  gather_facts: True
   vars_files:
     - global_vars.yml
   roles:
     - postgres11-repo
     - postgres11-server
+    - etcd

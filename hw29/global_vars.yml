@@ -1,10 +1,9 @@
 ---
-# network information
-node1_hostname: node1.local
-node1_ip: 10.0.10.2
-node2_hostname: node2.local
-node2_ip: 10.0.10.3
-node3_hostname: node3.local
-node3_ip: 10.0.10.4
-allowed_network: 10.0.10.0/24
+nodes:
+  - hostname: node1.local
+    ip: 10.0.10.2
+  - hostname: node2.local
+    ip: 10.0.10.3
+  - hostname: node3.local
+    ip: 10.0.10.4
 ...

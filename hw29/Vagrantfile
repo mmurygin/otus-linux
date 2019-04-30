@@ -16,11 +16,11 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "node2" do |node2|
     node2.vm.hostname = "node2.local"
-    node2.vm.network "private_network", ip: "10.0.10.2"
+    node2.vm.network "private_network", ip: "10.0.10.3"
   end
 
   config.vm.define "node3" do |node3|
     node3.vm.hostname = "node3.local"
-    node3.vm.network "private_network", ip: "10.0.10.2"
+    node3.vm.network "private_network", ip: "10.0.10.4"
   end
 end

@@ -1,0 +1,11 @@
+---
+- name: install etcd
+  yum:
+    name: etcd
+    state: present
+
+- name: copy configs
+  template:
+    src: templates/etcd.conf
+    dest: /etc/etcd/etcd.conf
+  notify: restart etcd
