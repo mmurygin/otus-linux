@@ -35,6 +35,7 @@
 
 - name: update mysql password
   shell: |
+    set -e
     mysql --connect-expired-password -uroot -p'{{ generated_password.stdout }}' -e 'ALTER USER USER() IDENTIFIED BY "{{ mysql_password }}"'
     sed -i '/A temporary password is generated/d' /var/log/mysqld.log
   when: generated_password.stdout
